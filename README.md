@@ -39,7 +39,7 @@ Ikuti langkah-langkah berikut untuk menjalankan project di lokal:
 
 ```bash
 git clone https://github.com/sifaq00/SimulasiCAT-SKD-CPNS.git
-cd simulasi-cpns
+cd SimulasiCAT-SKD-CPNS
 
 # Install PHP dependencies
 composer install
