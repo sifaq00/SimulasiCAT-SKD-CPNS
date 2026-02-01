@@ -92,11 +92,11 @@ class Transaction extends Model
     }
 
     /**
-     * Get the test attempt for this transaction.
+     * Get the test attempts for this transaction.
      */
-    public function testAttempt(): HasOne
+    public function testAttempts(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasOne(TestAttempt::class);
+        return $this->hasMany(TestAttempt::class);
     }
 
     /**
