@@ -38,7 +38,7 @@ Ikuti langkah-langkah berikut untuk menjalankan project di lokal:
 ### 1. Clone Repository & Install Dependencies
 
 ```bash
-git clone https://github.com/username/simulasi-cpns.git
+git clone https://github.com/sifaq00/SimulasiCAT-SKD-CPNS.git
 cd simulasi-cpns
 
 # Install PHP dependencies
