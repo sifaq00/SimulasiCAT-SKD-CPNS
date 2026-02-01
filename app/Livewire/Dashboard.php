@@ -59,58 +59,70 @@ class Dashboard extends Component
     public function loadPurchasedPackages()
     {
         $transactions = $this->user->transactions()
-            ->with(['package', 'bundle.packages'])
+            ->with(['package', 'bundle.packages', 'testAttempts'])
             ->where('status', Transaction::STATUS_PAID)
             ->get();
-
+            
         $packages = collect();
-
-        // Get IDs of packages that have been completed
-        $completedPackageIds = $this->user->testAttempts()
-            ->whereIn('status', [TestAttempt::STATUS_COMPLETED, TestAttempt::STATUS_TIMEOUT])
-            ->pluck('package_id')
-            ->toArray();
 
         foreach ($transactions as $transaction) {
             // Processing single package purchase
             if ($transaction->package) {
-                // Skip if this package is already completed
-                if (in_array($transaction->package_id, $completedPackageIds)) {
+                $pkg = $transaction->package;
+                
+                // Get attempt for THIS transaction and THIS package
+                $attempt = $transaction->testAttempts
+                    ->where('package_id', $pkg->id)
+                    ->first();
+
+                // Skip if this package is already completed FOR THIS TRANSACTION
+                if ($attempt && in_array($attempt->status, [TestAttempt::STATUS_COMPLETED, TestAttempt::STATUS_TIMEOUT])) {
                     continue;
                 }
 
                 $packages->push([
                     'transaction_id' => $transaction->id,
-                    'package_name' => $transaction->package->name,
-                    'package_slug' => $transaction->package->slug,
-                    'package_year' => $transaction->package->year,
+                    'package_name' => $pkg->name,
+                    'package_slug' => $pkg->slug,
+                    'package_year' => $pkg->year,
                     'purchased_at' => $transaction->paid_at?->format('d M Y') ?? $transaction->created_at->format('d M Y'),
                     'is_bundle' => false,
+                    'status' => $attempt?->status ?? 'new',
                 ]);
             }
             
             // Processing bundle purchase
             if ($transaction->bundle) {
                 foreach ($transaction->bundle->packages as $pkg) {
-                    // Skip if this specific package in the bundle is completed
-                    if (in_array($pkg->id, $completedPackageIds)) {
+                    // Check attempt for THIS transaction and THIS package in the bundle
+                    $attempt = $transaction->testAttempts
+                        ->where('package_id', $pkg->id)
+                        ->first();
+
+                    // Skip if this specific package in the bundle is completed FOR THIS TRANSACTION
+                    if ($attempt && in_array($attempt->status, [TestAttempt::STATUS_COMPLETED, TestAttempt::STATUS_TIMEOUT])) {
                         continue;
                     }
 
                     $packages->push([
-                        'transaction_id' => $transaction->id, // Use bundle transaction id
+                        'transaction_id' => $transaction->id,
                         'package_name' => $pkg->name,
                         'package_slug' => $pkg->slug,
                         'package_year' => $pkg->year,
                         'purchased_at' => $transaction->paid_at?->format('d M Y') ?? $transaction->created_at->format('d M Y'),
                         'is_bundle' => true,
                         'bundle_name' => $transaction->bundle->name,
+                        'status' => $attempt?->status ?? 'new',
                     ]);
                 }
             }
         }
         
-        $this->purchasedPackages = $packages->unique(function ($item) {
+        // Use unique to avoid showing the same package twice if bought multiple times
+        // But keep the most "advanced" status (in_progress over new)
+        $this->purchasedPackages = $packages->sortByDesc(function($item) {
+            return $item['status'] === 'in_progress' ? 1 : 0;
+        })->unique(function ($item) {
             return $item['package_slug'];
         })->values()->toArray();
     }

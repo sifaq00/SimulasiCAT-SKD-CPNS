@@ -123,18 +123,24 @@ class User extends Authenticatable // implements MustVerifyEmail (disabled for d
     }
 
     /**
-     * Check if user has access to a package (has paid transaction).
+     * Check if user has access to a package (has paid transaction and not yet completed it).
      */
     public function hasAccessToPackage(int $packageId): bool
     {
         return $this->transactions()
-            ->where('package_id', $packageId)
             ->where('status', Transaction::STATUS_PAID)
-            ->whereDoesntHave('testAttempt', function ($query) {
-                $query->whereIn('status', [
-                    TestAttempt::STATUS_COMPLETED,
-                    TestAttempt::STATUS_TIMEOUT,
-                ]);
+            ->where(function ($query) use ($packageId) {
+                $query->where('package_id', $packageId)
+                    ->orWhereHas('bundle.packages', function ($q) use ($packageId) {
+                        $q->where('packages.id', $packageId);
+                    });
+            })
+            ->whereDoesntHave('testAttempts', function ($query) use ($packageId) {
+                $query->where('package_id', $packageId)
+                    ->whereIn('status', [
+                        TestAttempt::STATUS_COMPLETED,
+                        TestAttempt::STATUS_TIMEOUT,
+                    ]);
             })
             ->exists();
     }
