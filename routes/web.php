@@ -12,19 +12,18 @@ Route::view('/', 'welcome')->name('home');
 
 Route::get('packages', PackageList::class)->name('packages');
 
-// Authenticated routes (removed 'verified' for dev - re-enable for production)
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
     // Dashboard
     Route::get('dashboard', Dashboard::class)->name('dashboard');
-    
+
     // Profile
     Route::view('profile', 'profile')->name('profile');
-    
+
     // Payment
     Route::get('payment/checkout/{slug}', [PaymentController::class, 'checkout'])->name('payment.checkout');
     Route::post('payment/process/{slug}', [PaymentController::class, 'process'])->name('payment.process');
     Route::get('payment/finish', [PaymentController::class, 'finish'])->name('payment.finish');
-    
+
     // Test
     Route::get('test/result/{attemptId}', Result::class)->name('test.result');
     Route::get('test/{packageSlug}/{transactionId}', Simulation::class)->name('test.simulation');

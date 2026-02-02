@@ -39,7 +39,15 @@ new #[Layout('layouts.guest')] class extends Component
 
 <div>
     <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    @if (session('status') === 'verification-link-sent')
+        <div class="mb-4 font-medium text-sm text-green-600">
+            {{ __('A verification link has been sent to the email address you provided during registration. Please check your email and click the link to verify your account.') }}
+        </div>
+    @elseif (session('status') === 'verified')
+        <div class="mb-4 font-medium text-sm text-green-600">
+            {{ __('Your email has been verified. You may now log in.') }}
+        </div>
+    @endif
 
     <form wire:submit="login">
         <!-- Email Address -->

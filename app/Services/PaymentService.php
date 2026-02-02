@@ -19,7 +19,7 @@ class PaymentService
         Config::$isProduction = config('services.midtrans.is_production', false);
         Config::$isSanitized = true;
         Config::$is3ds = true;
-        
+
         // Disable SSL verification for local development (Windows SSL issue)
         // CURLOPT_SSL_VERIFYHOST = 81, CURLOPT_SSL_VERIFYPEER = 64
         Config::$curlOptions[81] = 0;
@@ -61,8 +61,8 @@ class PaymentService
      */
     public function generateSnapToken(Transaction $transaction): string
     {
-        $itemName = $transaction->package 
-            ? $transaction->package->name 
+        $itemName = $transaction->package
+            ? $transaction->package->name
             : ($transaction->bundle ? $transaction->bundle->name : 'Simulasi CPNS');
 
         $params = [
@@ -95,19 +95,46 @@ class PaymentService
         try {
             // Use Laravel HTTP client with SSL verification disabled for development
             $isProduction = config('services.midtrans.is_production', false);
-            $url = $isProduction 
+            $url = $isProduction
                 ? 'https://app.midtrans.com/snap/v1/transactions'
                 : 'https://app.sandbox.midtrans.com/snap/v1/transactions';
-            
+
+            /** @var \Illuminate\Http\Client\Response $response */
             $response = \Illuminate\Support\Facades\Http::withOptions([
-                'verify' => false, // Disable SSL verification for development
+                'verify' => false,
             ])
             ->withBasicAuth(config('services.midtrans.server_key'), '')
             ->acceptJson()
             ->post($url, $params);
 
-            if ($response->successful()) {
-                return $response->json('token');
+            if ($response->ok()) {
+                return $response->json()['token'];
+            }
+
+            $body = $response->json() ?: [];
+            $messages = $body['error_messages'] ?? [];
+            $messageText = is_array($messages) ? implode(' ', $messages) : ($response->body() ?: '');
+
+            if (str_contains(strtolower($messageText), 'order_id') || str_contains(strtolower($messageText), 'sudah digunakan') || str_contains(strtolower($messageText), 'already used')) {
+                if ($transaction instanceof Transaction) {
+                    $oldInvoice = $transaction->invoice_number;
+                    $transaction->invoice_number = 'INV-' . time() . '-' . rand(1000, 9999);
+                    $transaction->save();
+
+                    $params['transaction_details']['order_id'] = $transaction->invoice_number;
+
+                    /** @var \Illuminate\Http\Client\Response $retry */
+                    $retry = \Illuminate\Support\Facades\Http::withOptions(['verify' => false])->withBasicAuth(config('services.midtrans.server_key'), '')->acceptJson()->post($url, $params);
+
+                    if ($retry->ok()) {
+                        return $retry->json('token');
+                    }
+
+                    $transaction->invoice_number = $oldInvoice;
+                    $transaction->save();
+
+                    throw new Exception('Midtrans error on retry: ' . $retry->body());
+                }
             }
 
             throw new Exception('Midtrans error: ' . $response->body());

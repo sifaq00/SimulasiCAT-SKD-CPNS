@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -26,25 +27,33 @@ class PaymentController extends Controller
     public function checkout(Request $request, string $slug)
     {
         $type = $request->query('type', 'package');
-        
+
         if ($type === 'bundle') {
             $item = \App\Models\Bundle::where('slug', $slug)->firstOrFail();
-            $transaction = Transaction::where('user_id', auth()->id())
+            $transaction = Transaction::where('user_id', Auth::id())
                 ->where('bundle_id', $item->id)
                 ->where('status', Transaction::STATUS_PENDING)
                 ->where('expired_at', '>', now())
+                ->orderByDesc('created_at')
                 ->first();
         } else {
             $item = Package::where('slug', $slug)->firstOrFail();
-            $transaction = Transaction::where('user_id', auth()->id())
+            $transaction = Transaction::where('user_id', Auth::id())
                 ->where('package_id', $item->id)
                 ->where('status', Transaction::STATUS_PENDING)
                 ->where('expired_at', '>', now())
+                ->orderByDesc('created_at')
                 ->first();
         }
 
         if ($transaction) {
-            $snapToken = $this->paymentService->generateSnapToken($transaction);
+            try {
+                $snapToken = $this->paymentService->generateSnapToken($transaction);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::warning('Unable to generate snap token for existing transaction: ' . $e->getMessage());
+                $snapToken = null;
+            }
+
             return view('payment.checkout', [
                 'item' => $item,
                 'type' => $type,
@@ -69,7 +78,8 @@ class PaymentController extends Controller
     public function process(Request $request, string $slug)
     {
         $type = $request->input('type', 'package');
-        $user = auth()->user();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
 
         if ($type === 'bundle') {
             $item = \App\Models\Bundle::where('slug', $slug)->firstOrFail();
@@ -82,6 +92,43 @@ class PaymentController extends Controller
                     'success' => false,
                     'message' => 'Anda sudah memiliki akses ke paket ini.',
                 ], 400);
+            }
+        }
+
+        if ($type === 'bundle') {
+            $existing = Transaction::where('user_id', $user->id)
+                ->where('bundle_id', $item->id)
+                ->where('status', Transaction::STATUS_PENDING)
+                ->where('expired_at', '>', now())
+                ->first();
+        } else {
+            $existing = Transaction::where('user_id', $user->id)
+                ->where('package_id', $item->id)
+                ->where('status', Transaction::STATUS_PENDING)
+                ->where('expired_at', '>', now())
+                ->first();
+        }
+
+        if ($existing) {
+            try {
+                $snapToken = $this->paymentService->generateSnapToken($existing);
+
+                return response()->json([
+                    'success' => true,
+                    'snap_token' => $snapToken,
+                    'transaction_id' => $existing->id,
+                    'invoice_number' => $existing->invoice_number,
+                ]);
+            } catch (\Exception $e) {
+                Log::warning('Midtrans token generation failed for existing transaction: '.$e->getMessage());
+
+                return response()->json([
+                    'success' => false,
+                    'code' => 'existing_pending',
+                    'transaction_id' => $existing->id,
+                    'invoice_number' => $existing->invoice_number,
+                    'message' => 'Anda sudah memiliki transaksi yang menunggu. Silakan selesaikan pembayaran pada halaman checkout.',
+                ], 200);
             }
         }
 
@@ -105,9 +152,9 @@ class PaymentController extends Controller
             ]);
         } catch (\Exception $e) {
             Log::error('Payment error: ' . $e->getMessage());
-            
+
             $transaction->update(['status' => Transaction::STATUS_FAILED]);
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal memproses pembayaran. Silakan coba lagi.',
@@ -136,8 +183,8 @@ class PaymentController extends Controller
         }
 
         if ($transaction->isPaid()) {
-            $message = $transaction->bundle_id 
-                ? 'Pembayaran Bundle berhasil! Semua paket dalam bundle telah aktif.' 
+            $message = $transaction->bundle_id
+                ? 'Pembayaran Bundle berhasil! Semua paket dalam bundle telah aktif.'
                 : 'Pembayaran berhasil! Paket simulasi telah aktif dan siap dikerjakan.';
 
             return redirect()->route('dashboard')->with('success', $message);
@@ -166,7 +213,7 @@ class PaymentController extends Controller
             return response()->json(['status' => 'ok']);
         } catch (\Exception $e) {
             Log::error('Webhook error: ' . $e->getMessage());
-            
+
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }

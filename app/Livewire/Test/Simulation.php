@@ -8,6 +8,7 @@ use App\Models\Transaction;
 use App\Services\TestService;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.exam')]
 class Simulation extends Component
@@ -22,6 +23,13 @@ class Simulation extends Component
     public $warningMessage = '';
     public $tabSwitchCount = 0;
 
+    /**
+     * Livewire listeners for client events
+     */
+    protected $listeners = [
+        'recordTabSwitch' => 'recordTabSwitch',
+    ];
+
     protected TestService $testService;
 
     public function boot(TestService $testService)
@@ -33,13 +41,13 @@ class Simulation extends Component
     {
         $this->package = Package::where('slug', $packageSlug)->firstOrFail();
         $transaction = Transaction::where('id', $transactionId)
-            ->where('user_id', auth()->id())
+            ->where('user_id', Auth::user()->id)
             ->where('status', Transaction::STATUS_PAID)
             ->firstOrFail();
 
         // Start or resume test
         $this->attempt = $this->testService->startTest(
-            auth()->user(),
+            Auth::user(),
             $this->package,
             $transaction
         );
@@ -98,7 +106,7 @@ class Simulation extends Component
 
         try {
             $this->testService->submitAnswer($this->attempt, $question['id'], $optionId);
-            
+
             // Update local state
             $this->questions[$this->currentQuestionIndex]['selected_option_id'] = $optionId;
             $this->loadNavigation();
@@ -124,7 +132,7 @@ class Simulation extends Component
     public function recordTabSwitch()
     {
         $this->tabSwitchCount = $this->testService->recordTabSwitch($this->attempt);
-        
+
         $this->showWarning = true;
         $this->warningMessage = 'Anda terdeteksi membuka tab/aplikasi lain! Peringatan ke-' . $this->tabSwitchCount;
     }
@@ -157,7 +165,7 @@ class Simulation extends Component
         return view('livewire.test.simulation', [
             'currentQuestion' => $this->getCurrentQuestion(),
             'totalQuestions' => count($this->questions),
-            'user' => auth()->user(),
+            'user' => Auth::user(),
         ]);
     }
 }

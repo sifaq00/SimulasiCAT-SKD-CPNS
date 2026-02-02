@@ -39,6 +39,16 @@ class LoginForm extends Form
         }
 
         RateLimiter::clear($this->throttleKey());
+
+        $intended = session()->get('url.intended', '');
+
+        if (Auth::check() && Auth::user()->email_verified_at === null && ! str_contains($intended, '/verify-email')) {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'form.email' => 'Your email address is not verified. Please check your inbox for the verification link.',
+            ]);
+        }
     }
 
     /**
