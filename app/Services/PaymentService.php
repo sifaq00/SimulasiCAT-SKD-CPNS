@@ -107,11 +107,14 @@ class PaymentService
             ->acceptJson()
             ->post($url, $params);
 
-            if ($response->ok()) {
-                return $response->json()['token'];
+            $body = $response->json() ?: [];
+
+            // Check if token exists in response (Midtrans returns token on success)
+            if (isset($body['token'])) {
+                return $body['token'];
             }
 
-            $body = $response->json() ?: [];
+            // If no token, check for error messages
             $messages = $body['error_messages'] ?? [];
             $messageText = is_array($messages) ? implode(' ', $messages) : ($response->body() ?: '');
 
