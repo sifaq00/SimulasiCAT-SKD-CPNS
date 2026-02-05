@@ -1,5 +1,5 @@
 <div class="py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {{-- Welcome --}}
         <div class="mb-8">
             <h1 class="text-2xl font-bold text-gray-900">Selamat datang, {{ $user->name }}!</h1>
@@ -7,14 +7,14 @@
         </div>
 
         {{-- Stats Cards --}}
-        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-            <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="grid grid-cols-2 gap-4 mb-8 lg:grid-cols-5">
+            <div class="p-6 bg-white shadow-sm rounded-xl">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-500">Total Simulasi</p>
                         <p class="text-2xl font-bold text-gray-900">{{ $stats['total_tests'] }}</p>
                     </div>
-                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full">
                         <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
@@ -24,13 +24,13 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="p-6 bg-white shadow-sm rounded-xl">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-500">Skor Rata-rata</p>
                         <p class="text-2xl font-bold text-gray-900">{{ $stats['average_score'] }}</p>
                     </div>
-                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <div class="flex items-center justify-center w-12 h-12 bg-green-100 rounded-full">
                         <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
@@ -40,13 +40,13 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="p-6 bg-white shadow-sm rounded-xl">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-500">Skor Tertinggi</p>
                         <p class="text-2xl font-bold text-gray-900">{{ $stats['highest_score'] }}</p>
                     </div>
-                    <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                    <div class="flex items-center justify-center w-12 h-12 bg-yellow-100 rounded-full">
                         <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
@@ -56,13 +56,13 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="p-6 bg-white shadow-sm rounded-xl">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-500">Lulus</p>
                         <p class="text-2xl font-bold text-green-600">{{ $stats['passed_count'] }}</p>
                     </div>
-                    <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                    <div class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100">
                         <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -71,14 +71,14 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="p-6 bg-white shadow-sm rounded-xl">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-500">Total Pembelian</p>
                         <p class="text-xl font-bold text-gray-900">Rp
                             {{ number_format($stats['total_spent'], 0, ',', '.') }}</p>
                     </div>
-                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                    <div class="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-full">
                         <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z">
@@ -89,25 +89,25 @@
             </div>
         </div>
 
-        <div class="grid lg:grid-cols-3 gap-8">
+        <div class="grid gap-8 lg:grid-cols-3">
             {{-- Main Content --}}
-            <div class="lg:col-span-2 space-y-6">
+            <div class="space-y-6 lg:col-span-2">
                 {{-- Purchased Packages Ready to Test --}}
                 @if (count($purchasedPackages) > 0)
-                    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="overflow-hidden bg-white shadow-sm rounded-xl">
                         <div class="p-6 border-b bg-gradient-to-r from-green-500 to-emerald-600">
                             <h2 class="text-lg font-semibold text-white">🎯 Paket Siap Dikerjakan</h2>
                             <p class="text-sm text-green-100">Klik tombol mulai untuk memulai simulasi</p>
                         </div>
                         <div class="divide-y">
                             @foreach ($purchasedPackages as $pkg)
-                                <div class="p-4 hover:bg-gray-50 flex items-center justify-between">
+                                <div class="flex items-center justify-between p-4 hover:bg-gray-50">
                                     <div>
                                         <p class="font-medium text-gray-900">{{ $pkg['package_name'] }}</p>
                                         <p class="text-sm text-gray-500">
                                             @if ($pkg['is_bundle'])
                                                 <span
-                                                    class="text-blue-600 font-medium">[{{ $pkg['bundle_name'] }}]</span>
+                                                    class="font-medium text-blue-600">[{{ $pkg['bundle_name'] }}]</span>
                                                 •
                                             @endif
                                             Dibeli: {{ $pkg['purchased_at'] }}
@@ -124,7 +124,7 @@
                 @endif
 
                 {{-- Recent Attempts --}}
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="overflow-hidden bg-white shadow-sm rounded-xl">
                     <div class="p-6 border-b">
                         <h2 class="text-lg font-semibold text-gray-900">Riwayat Simulasi Terbaru</h2>
                     </div>
@@ -132,7 +132,7 @@
                     @if (count($recentAttempts) > 0)
                         <div class="divide-y">
                             @foreach ($recentAttempts as $attempt)
-                                <div class="p-4 hover:bg-gray-50 flex items-center justify-between">
+                                <div class="flex items-center justify-between p-4 hover:bg-gray-50">
                                     <div>
                                         <p class="font-medium text-gray-900">{{ $attempt['package_name'] }}</p>
                                         <p class="text-sm text-gray-500">{{ $attempt['date'] }}</p>
@@ -144,7 +144,7 @@
                                                 {{ $attempt['total_score'] }}/550
                                             </p>
                                             <span
-                                                class="text-xs px-2 py-1 rounded-full 
+                                                class="text-xs px-2 py-1 rounded-full
                                                 {{ $attempt['passed'] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
                                                 {{ $attempt['passed'] ? 'LULUS' : 'TIDAK LULUS' }}
                                             </span>
@@ -177,7 +177,7 @@
                             </svg>
                             <p>Belum ada riwayat simulasi</p>
                             <a href="{{ route('packages') }}"
-                                class="mt-2 inline-block text-blue-600 hover:underline">
+                                class="inline-block mt-2 text-blue-600 hover:underline">
                                 Mulai simulasi pertama Anda
                             </a>
                         </div>
@@ -187,28 +187,32 @@
 
             {{-- Quick Actions --}}
             <div>
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Aksi Cepat</h2>
+                <div class="p-6 bg-white shadow-sm rounded-xl">
+                    <h2 class="mb-4 text-lg font-semibold text-gray-900">Aksi Cepat</h2>
 
                     <div class="space-y-3">
-                        <a href="{{ route('packages') }}"
-                            class="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 transition-colors">
-                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                        <a href="{{ route('packages') }}" id="buyPackageBtn"
+                            class="relative flex items-center gap-3 p-4 overflow-hidden transition-all duration-300 transform shadow-lg rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105 hover:shadow-xl group">
+                            <div class="absolute inset-0 transition-opacity bg-white opacity-0 group-hover:opacity-10"></div>
+                            <div class="relative z-10 flex items-center justify-center w-12 h-12 transition-transform duration-300 rounded-lg bg-white/20 backdrop-blur-sm group-hover:rotate-12">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                 </svg>
                             </div>
-                            <div>
-                                <p class="font-medium text-gray-900">Beli Paket Baru</p>
-                                <p class="text-sm text-gray-500">Lihat paket simulasi tersedia</p>
+                            <div class="relative z-10">
+                                <p class="text-lg font-bold text-white">Beli Paket Baru</p>
+                                <p class="text-sm text-white">Lihat paket simulasi tersedia</p>
+                            </div>
+                            <div class="absolute transition-opacity opacity-50 right-4 group-hover:opacity-100">
+                                <svg class="w-6 h-6 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                </svg>
                             </div>
                         </a>
 
                         <a href="{{ route('profile') }}"
-                            class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                            <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                            class="flex items-center gap-3 p-3 transition-colors rounded-lg hover:bg-gray-50">
+                            <div class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg">
                                 <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -224,8 +228,8 @@
                 </div>
 
                 {{-- Passing Grade Info --}}
-                <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-sm p-6 mt-6 text-white">
-                    <h3 class="font-semibold mb-3">Passing Grade SKD</h3>
+                <div class="p-6 mt-6 text-white shadow-sm bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl">
+                    <h3 class="mb-3 font-semibold">Passing Grade SKD</h3>
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between">
                             <span class="text-white/80">TWK</span>
@@ -239,7 +243,7 @@
                             <span class="text-white/80">TKP</span>
                             <span class="font-medium">≥ 166</span>
                         </div>
-                        <div class="flex justify-between border-t border-white/20 pt-2 mt-2">
+                        <div class="flex justify-between pt-2 mt-2 border-t border-white/20">
                             <span class="text-white/80">Total Minimum</span>
                             <span class="font-bold">311</span>
                         </div>
@@ -249,3 +253,30 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const buyPackageBtn = document.getElementById('buyPackageBtn');
+
+        // Floating animation
+        let direction = 1;
+        let position = 0;
+
+        setInterval(() => {
+            position += 0.5 * direction;
+            if (position >= 5 || position <= -5) {
+                direction *= -1;
+            }
+            buyPackageBtn.style.transform = `translateY(${position}px)`;
+        }, 50);
+
+        // Pulse effect on the icon
+        const icon = buyPackageBtn.querySelector('.w-12');
+        setInterval(() => {
+            icon.classList.add('scale-110');
+            setTimeout(() => {
+                icon.classList.remove('scale-110');
+            }, 200);
+        }, 2000);
+    });
+</script>
