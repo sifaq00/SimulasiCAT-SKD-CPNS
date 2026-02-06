@@ -23,6 +23,7 @@ class PackageManage extends Component
         'total_questions' => 110,
         'duration_minutes' => 100,
         'is_active' => true,
+        'is_free' => false,
     ];
 
     public $showBundleForm = false;
@@ -105,6 +106,7 @@ class PackageManage extends Component
             'total_questions' => $package->total_questions,
             'duration_minutes' => $package->duration_minutes,
             'is_active' => $package->is_active,
+            'is_free' => $package->is_free,
         ];
         $this->showForm = true;
     }
@@ -138,7 +140,7 @@ class PackageManage extends Component
     public function deletePackage($id)
     {
         $package = Package::findOrFail($id);
-        
+
         if ($package->questions()->count() > 0) {
             session()->flash('error', 'Tidak bisa menghapus paket yang sudah memiliki soal!');
             return;
@@ -167,6 +169,7 @@ class PackageManage extends Component
             'total_questions' => 110,
             'duration_minutes' => 100,
             'is_active' => true,
+            'is_free' => false,
         ];
     }
 
@@ -194,7 +197,7 @@ class PackageManage extends Component
             'original_price' => $bundle->original_price,
             'discount_price' => $bundle->discount_price,
             'is_active' => $bundle->is_active,
-            'selected_packages' => $bundle->packages->pluck('id')->map(fn($id) => (string)$id)->toArray(),
+            'selected_packages' => $bundle->packages->pluck('id')->map(fn($id) => (string) $id)->toArray(),
         ];
         $this->showBundleForm = true;
     }
@@ -234,13 +237,13 @@ class PackageManage extends Component
         // For simplicity, just delete. Transactions might have null bundle_id if generic constraint, 
         // or prevent delete if transactions exist.
         if ($bundle->transactions()->exists()) {
-             session()->flash('error', 'Tidak bisa menghapus bundle yang sudah dibeli user!');
-             return;
+            session()->flash('error', 'Tidak bisa menghapus bundle yang sudah dibeli user!');
+            return;
         }
 
         $bundle->packages()->detach(); // Pivot
         $bundle->delete();
-        
+
         session()->flash('success', 'Bundle berhasil dihapus!');
         $this->loadData();
     }

@@ -51,6 +51,9 @@ class Dashboard extends Component
                     'passed' => $attempt->passed_overall,
                     'status' => $attempt->status,
                     'date' => $attempt->created_at->format('d M Y'),
+                    'score_twk' => $attempt->score_twk,
+                    'score_tiu' => $attempt->score_tiu,
+                    'score_tkp' => $attempt->score_tkp,
                 ];
             })
             ->toArray();
@@ -62,14 +65,14 @@ class Dashboard extends Component
             ->with(['package', 'bundle.packages', 'testAttempts'])
             ->where('status', Transaction::STATUS_PAID)
             ->get();
-            
+
         $packages = collect();
 
         foreach ($transactions as $transaction) {
             // Processing single package purchase
             if ($transaction->package) {
                 $pkg = $transaction->package;
-                
+
                 // Get attempt for THIS transaction and THIS package
                 $attempt = $transaction->testAttempts
                     ->where('package_id', $pkg->id)
@@ -90,7 +93,7 @@ class Dashboard extends Component
                     'status' => $attempt?->status ?? 'new',
                 ]);
             }
-            
+
             // Processing bundle purchase
             if ($transaction->bundle) {
                 foreach ($transaction->bundle->packages as $pkg) {
@@ -117,10 +120,10 @@ class Dashboard extends Component
                 }
             }
         }
-        
+
         // Use unique to avoid showing the same package twice if bought multiple times
         // But keep the most "advanced" status (in_progress over new)
-        $this->purchasedPackages = $packages->sortByDesc(function($item) {
+        $this->purchasedPackages = $packages->sortByDesc(function ($item) {
             return $item['status'] === 'in_progress' ? 1 : 0;
         })->unique(function ($item) {
             return $item['package_slug'];

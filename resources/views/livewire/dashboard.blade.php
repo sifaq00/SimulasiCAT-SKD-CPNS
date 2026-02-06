@@ -1,282 +1,310 @@
-<div class="py-12">
-    <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        {{-- Welcome --}}
-        <div class="mb-8">
-            <h1 class="text-2xl font-bold text-gray-900">Selamat datang, {{ $user->name }}!</h1>
-            <p class="text-gray-500">Berikut ringkasan aktivitas simulasi CPNS Anda.</p>
+<div class="py-12 pt-28 min-h-screen bg-slate-50/50 relative overflow-hidden">
+    {{-- Subtle Background Accents --}}
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-500/5 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-500/5 blur-[120px] rounded-full"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {{-- Welcome Section --}}
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+            <div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 font-outfit tracking-tight mb-2">
+                    Halo, <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">{{ auth()->user()->name }}</span>! 👋
+                </h1>
+                <p class="text-slate-500 font-medium">Siap tembus CPNS tahun ini? Yuk, lanjut latihan lagi.</p>
+            </div>
+            
+
         </div>
 
-        {{-- Stats Cards --}}
-        <div class="grid grid-cols-2 gap-4 mb-8 lg:grid-cols-5">
-            <div class="p-6 bg-white shadow-sm rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500">Total Simulasi</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $stats['total_tests'] }}</p>
-                    </div>
-                    <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
-                            </path>
-                        </svg>
-                    </div>
+        {{-- Stats Grid --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
+            {{-- Card 1: Ujian Selesai (Blue - Default) --}}
+            <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm group hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-500 flex items-center gap-4">
+                <div class="w-12 h-12 shrink-0 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-500 border border-blue-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Ujian Selesai</p>
+                    <p class="text-2xl font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors font-outfit tracking-tight leading-none">{{ $stats['total_tests'] }}</p>
+                </div>
+            </div>
+            
+            {{-- Card 2: Rata-rata Skor (Violet - Wisdom) --}}
+            <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm group hover:shadow-lg hover:shadow-violet-500/5 transition-all duration-500 flex items-center gap-4">
+                <div class="w-12 h-12 shrink-0 bg-violet-50 text-violet-600 rounded-xl flex items-center justify-center group-hover:bg-violet-600 group-hover:text-white transition-all duration-500 border border-violet-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Rata-rata Skor</p>
+                    <p class="text-2xl font-extrabold text-slate-900 group-hover:text-violet-600 transition-colors font-outfit tracking-tight leading-none">{{ $stats['average_score'] }}</p>
                 </div>
             </div>
 
-            <div class="p-6 bg-white shadow-sm rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500">Skor Rata-rata</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $stats['average_score'] }}</p>
-                    </div>
-                    <div class="flex items-center justify-center w-12 h-12 bg-green-100 rounded-full">
-                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                            </path>
-                        </svg>
-                    </div>
+            {{-- Card 3: Skor Tertinggi (Amber - Trophy) --}}
+            <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm group hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-500 flex items-center gap-4">
+                <div class="w-12 h-12 shrink-0 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center group-hover:bg-amber-600 group-hover:text-white transition-all duration-500 border border-amber-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Skor Tertinggi</p>
+                    <p class="text-2xl font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors font-outfit tracking-tight leading-none">{{ $stats['highest_score'] }}</p>
                 </div>
             </div>
 
-            <div class="p-6 bg-white shadow-sm rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500">Skor Tertinggi</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $stats['highest_score'] }}</p>
-                    </div>
-                    <div class="flex items-center justify-center w-12 h-12 bg-yellow-100 rounded-full">
-                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
-                            </path>
-                        </svg>
-                    </div>
+            {{-- Card 4: Lulus (Emerald - Success) --}}
+            <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm group hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-500 flex items-center gap-4">
+                <div class="w-12 h-12 shrink-0 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all duration-500 border border-emerald-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Lulus</p>
+                    <p class="text-2xl font-extrabold text-slate-900 group-hover:text-emerald-600 transition-colors font-outfit tracking-tight leading-none">{{ $stats['passed_count'] }}</p>
                 </div>
             </div>
 
-            <div class="p-6 bg-white shadow-sm rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500">Lulus</p>
-                        <p class="text-2xl font-bold text-green-600">{{ $stats['passed_count'] }}</p>
-                    </div>
-                    <div class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100">
-                        <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
+            {{-- Card 5: Pengeluaran (Rose - Contrast) --}}
+            <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm group hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-500 flex items-center gap-4">
+                <div class="w-12 h-12 shrink-0 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-all duration-500 border border-rose-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                 </div>
-            </div>
-
-            <div class="p-6 bg-white shadow-sm rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500">Total Pembelian</p>
-                        <p class="text-xl font-bold text-gray-900">Rp
-                            {{ number_format($stats['total_spent'], 0, ',', '.') }}</p>
-                    </div>
-                    <div class="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-full">
-                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z">
-                            </path>
-                        </svg>
-                    </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Total Investasi</p>
+                    <p class="text-xl font-extrabold text-slate-900 group-hover:text-rose-600 transition-colors font-outfit tracking-tight leading-none">Rp {{ number_format($stats['total_spent'], 0, ',', '.') }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="grid gap-8 lg:grid-cols-3">
+        <div class="grid lg:grid-cols-3 gap-8 items-start">
             {{-- Main Content --}}
-            <div class="space-y-6 lg:col-span-2">
-                {{-- Purchased Packages Ready to Test --}}
-                @if (count($purchasedPackages) > 0)
-                    <div class="overflow-hidden bg-white shadow-sm rounded-xl">
-                        <div class="p-6 border-b bg-gradient-to-r from-green-500 to-emerald-600">
-                            <h2 class="text-lg font-semibold text-white">🎯 Paket Siap Dikerjakan</h2>
-                            <p class="text-sm text-green-100">Klik tombol mulai untuk memulai simulasi</p>
-                        </div>
-                        <div class="divide-y">
-                            @foreach ($purchasedPackages as $pkg)
-                                <div class="flex items-center justify-between p-4 hover:bg-gray-50">
-                                    <div>
-                                        <p class="font-medium text-gray-900">{{ $pkg['package_name'] }}</p>
-                                        <p class="text-sm text-gray-500">
-                                            @if ($pkg['is_bundle'])
-                                                <span
-                                                    class="font-medium text-blue-600">[{{ $pkg['bundle_name'] }}]</span>
-                                                •
+            <div class="lg:col-span-2 space-y-12">
+                {{-- Ready to Test Section --}}
+                <section>
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="text-2xl font-bold text-slate-900 font-outfit tracking-tight">Paket Saya</h2>
+                        <a href="{{ route('packages') }}" class="text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1 group">
+                            Cek Paket Lain <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                        </a>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        @forelse($purchasedPackages as $package)
+                            <div class="group relative bg-white rounded-2xl border border-slate-100 p-5 shadow-sm hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-500">
+                                <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <span class="px-2.5 py-1 bg-slate-50 text-slate-500 rounded-lg text-[10px] font-black tracking-widest uppercase border border-slate-100">
+                                                {{ $package['package_year'] }}
+                                            </span>
+                                            @if($package['status'] === 'in_progress')
+                                                <span class="text-[10px] font-black text-amber-600 uppercase tracking-widest">Berjalan</span>
                                             @endif
-                                            Dibeli: {{ $pkg['purchased_at'] }}
+                                        </div>
+                                        
+                                        <h3 class="text-lg font-bold text-slate-900 font-outfit mb-1 tracking-tight group-hover:text-blue-600 transition-colors">{{ $package['package_name'] }}</h3>
+                                        <p class="text-slate-400 text-xs font-medium">
+                                            @if($package['is_bundle'])
+                                                <span class="text-blue-600">[{{ $package['bundle_name'] }}]</span> •
+                                            @endif
+                                            {{ $package['purchased_at'] }}
                                         </p>
                                     </div>
-                                    <a href="{{ route('test.simulation', ['packageSlug' => $pkg['package_slug'], 'transactionId' => $pkg['transaction_id']]) }}"
-                                        class="px-4 py-2 {{ $pkg['status'] === 'in_progress' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-green-600 hover:bg-green-700' }} text-white rounded-lg transition font-medium">
-                                        {{ $pkg['status'] === 'in_progress' ? 'Lanjutkan Ujian' : 'Mulai Ujian' }}
-                                    </a>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-
-                {{-- Recent Attempts --}}
-                <div class="overflow-hidden bg-white shadow-sm rounded-xl">
-                    <div class="p-6 border-b">
-                        <h2 class="text-lg font-semibold text-gray-900">Riwayat Simulasi Terbaru</h2>
-                    </div>
-
-                    @if (count($recentAttempts) > 0)
-                        <div class="divide-y">
-                            @foreach ($recentAttempts as $attempt)
-                                <div class="flex items-center justify-between p-4 hover:bg-gray-50">
-                                    <div>
-                                        <p class="font-medium text-gray-900">{{ $attempt['package_name'] }}</p>
-                                        <p class="text-sm text-gray-500">{{ $attempt['date'] }}</p>
-                                    </div>
-                                    <div class="flex items-center gap-4">
-                                        <div class="text-right">
-                                            <p
-                                                class="font-bold {{ $attempt['passed'] ? 'text-green-600' : 'text-red-600' }}">
-                                                {{ $attempt['total_score'] }}/550
-                                            </p>
-                                            <span
-                                                class="text-xs px-2 py-1 rounded-full
-                                                {{ $attempt['passed'] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-                                                {{ $attempt['passed'] ? 'LULUS' : 'TIDAK LULUS' }}
-                                            </span>
-                                        </div>
-                                        @if ($attempt['status'] === 'completed' || $attempt['status'] === 'timeout')
-                                            <a href="{{ route('test.result', $attempt['id']) }}"
-                                                class="text-blue-600 hover:text-blue-700">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                                    </path>
-                                                </svg>
-                                            </a>
-                                        @endif
+                                    
+                                    <div class="shrink-0">
+                                        <a href="{{ route('test.simulation', ['packageSlug' => $package['package_slug'], 'transactionId' => $package['transaction_id']]) }}" 
+                                           class="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 rounded-xl shadow-lg hover:shadow-xl font-bold transition-all duration-300 font-outfit text-sm {{ $package['status'] === 'in_progress' ? 'bg-amber-500 text-white hover:bg-amber-600 shadow-amber-500/20 hover:shadow-amber-500/30' : 'bg-blue-600 text-white hover:bg-blue-700 shadow-blue-600/20 hover:shadow-blue-600/30' }}">
+                                            {{ $package['status'] === 'in_progress' ? 'Lanjut' : 'Mulai' }}
+                                        </a>
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <div class="p-8 text-center text-gray-500">
-                            <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
-                                </path>
-                            </svg>
-                            <p>Belum ada riwayat simulasi</p>
-                            <a href="{{ route('packages') }}"
-                                class="inline-block mt-2 text-blue-600 hover:underline">
-                                Mulai simulasi pertama Anda
+                            </div>
+                        @empty
+                            <div class="bg-white rounded-2xl border border-dashed border-slate-200 p-8 text-center shadow-sm">
+                                <h3 class="text-base font-bold text-slate-900 mb-1 font-outfit">Belum ada paket aktif</h3>
+                                <p class="text-slate-500 text-sm mb-6 max-w-xs mx-auto">Miliki paket latihan pertamamu untuk memulai persiapan.</p>
+                                <a href="{{ route('packages') }}" class="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all font-outfit shadow-lg shadow-blue-600/20">
+                                    Beli Paket
+                                </a>
+                            </div>
+                        @endforelse
+                    </div>
+                </section>
+
+                {{-- Recent History Section --}}
+                <section>
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="text-2xl font-bold text-slate-900 font-outfit tracking-tight">Riwayat Ujian</h2>
+                        @if(count($recentAttempts) > 0)
+                            <a href="{{ route('test.history') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-xl text-xs font-bold transition-all font-outfit">
+                                Lihat Semua
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                             </a>
+                        @endif
+                    </div>
+
+                    
+                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="bg-slate-50/50">
+                                        <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Daftar Ujian</th>
+                                        <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Tanggal</th>
+                                        <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Skor</th>
+                                        <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Hasil</th>
+                                        <th class="px-6 py-4 text-right text-[10px] font-black text-slate-400 uppercase tracking-widest">Detail</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    @forelse($recentAttempts as $attempt)
+                                        <tr class="hover:bg-slate-50 transition-colors group">
+                                            <td class="px-6 py-4">
+                                                <div class="font-bold text-slate-900 font-outfit text-sm">{{ $attempt['package_name'] }}</div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="text-xs font-medium text-slate-500 font-outfit">{{ $attempt['date'] }}</div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex flex-col gap-1">
+                                                    <div class="text-lg font-extrabold text-slate-900 font-outfit leading-none">{{ $attempt['total_score'] }}</div>
+                                                    <div class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                                                        <span title="TWK"><span class="text-slate-400">TWK:</span> <span class="{{ $attempt['score_twk'] >= 65 ? 'text-emerald-600' : 'text-rose-500' }}">{{ $attempt['score_twk'] }}</span></span>
+                                                        <span class="text-slate-200">|</span>
+                                                        <span title="TIU"><span class="text-slate-400">TIU:</span> <span class="{{ $attempt['score_tiu'] >= 80 ? 'text-emerald-600' : 'text-rose-500' }}">{{ $attempt['score_tiu'] }}</span></span>
+                                                        <span class="text-slate-200">|</span>
+                                                        <span title="TKP"><span class="text-slate-400">TKP:</span> <span class="{{ $attempt['score_tkp'] >= 166 ? 'text-emerald-600' : 'text-rose-500' }}">{{ $attempt['score_tkp'] }}</span></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                @if($attempt['passed'])
+                                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-emerald-50 text-emerald-600 rounded-md text-[10px] font-black uppercase tracking-widest border border-emerald-100">
+                                                        LULUS
+                                                    </span>
+                                                @else
+                                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-rose-50 text-rose-600 rounded-md text-[10px] font-black uppercase tracking-widest border border-rose-100">
+                                                        GAGAL
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 text-right">
+                                                @if($attempt['status'] === 'completed' || $attempt['status'] === 'timeout')
+                                                    <a href="{{ route('test.result', $attempt['id']) }}" class="p-1.5 text-slate-400 hover:text-blue-600 transition-colors inline-block" wire:navigate>
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                                    </a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="px-6 py-12 text-center">
+                                                <p class="text-slate-500 text-sm font-medium">Belum ada riwayat ujian.</p>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
-                    @endif
-                </div>
+                    </div>
+                </section>
             </div>
 
-            {{-- Quick Actions --}}
-            <div>
-                <div class="p-6 bg-white shadow-sm rounded-xl">
-                    <h2 class="mb-4 text-lg font-semibold text-gray-900">Aksi Cepat</h2>
-
-                    <div class="space-y-3">
-                        <a href="{{ route('packages') }}" id="buyPackageBtn"
-                            class="relative flex items-center gap-3 p-4 overflow-hidden transition-all duration-300 transform shadow-lg rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105 hover:shadow-xl group">
-                            <div class="absolute inset-0 transition-opacity bg-white opacity-0 group-hover:opacity-10"></div>
-                            <div class="relative z-10 flex items-center justify-center w-12 h-12 transition-transform duration-300 rounded-lg bg-white/20 backdrop-blur-sm group-hover:rotate-12">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                </svg>
+            {{-- Sidebar --}}
+            <aside class="space-y-8">
+                {{-- Quick Actions --}}
+                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 shadow-xl shadow-blue-900/10 group relative overflow-hidden">
+                    <h3 class="text-lg font-bold text-white font-outfit mb-4 tracking-tight relative z-10">Menu Cepat</h3>
+                    <div class="space-y-3 relative z-10">
+                        <a href="{{ route('packages') }}" class="flex items-center gap-3 p-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all group/item shadow-lg border border-white/10">
+                            <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center text-white group-hover/item:scale-110 transition-transform">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             </div>
-                            <div class="relative z-10">
-                                <p class="text-lg font-bold text-white">Beli Paket Baru</p>
-                                <p class="text-sm text-white">Lihat paket simulasi tersedia</p>
-                            </div>
-                            <div class="absolute transition-opacity opacity-50 right-4 group-hover:opacity-100">
-                                <svg class="w-6 h-6 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                                </svg>
+                            <div class="text-left">
+                                <p class="text-sm font-bold text-white font-outfit">Tambah Paket</p>
+                                <p class="text-[10px] text-white/60 font-medium">Beli simulasi terbaru</p>
                             </div>
                         </a>
-
-                        <a href="{{ route('profile') }}"
-                            class="flex items-center gap-3 p-3 transition-colors rounded-lg hover:bg-gray-50">
-                            <div class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg">
-                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
+                        <a href="{{ route('profile') }}" class="flex items-center gap-3 p-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all group/item shadow-lg border border-white/10">
+                            <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center text-white group-hover/item:scale-110 transition-transform">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                             </div>
-                            <div>
-                                <p class="font-medium text-gray-900">Edit Profil</p>
-                                <p class="text-sm text-gray-500">Kelola data akun Anda</p>
+                            <div class="text-left">
+                                <p class="text-sm font-bold text-white font-outfit">Edit Profil</p>
+                                <p class="text-[10px] text-white/60 font-medium">Kelola data akun Anda</p>
                             </div>
                         </a>
                     </div>
                 </div>
 
                 {{-- Passing Grade Info --}}
-                <div class="p-6 mt-6 text-white shadow-sm bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl">
-                    <h3 class="mb-3 font-semibold">Passing Grade SKD</h3>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-white/80">TWK</span>
-                            <span class="font-medium">≥ 65</span>
+                <div class="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm overflow-hidden relative group">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-base font-bold text-slate-900 font-outfit tracking-tight">Passing Grade</h3>
+                        <div class="group relative cursor-help">
+                            <svg class="w-4 h-4 text-slate-300 hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <div class="absolute right-0 bottom-full mb-2 w-48 p-3 bg-slate-900 text-white text-[10px] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-xl">
+                                Nilai ambang batas SKD CPNS 2024
+                            </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-white/80">TIU</span>
-                            <span class="font-medium">≥ 80</span>
+                    </div>
+
+                    <div class="space-y-5">
+                        <div class="group/item">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">TWK</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-sm font-extrabold text-blue-600 font-outfit">65</span>
+                                    <span class="text-[10px] font-bold text-slate-300">/ 150</span>
+                                </div>
+                            </div>
+                            <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden relative">
+                                {{-- Background threshold marker (43.3%) --}}
+                                <div class="absolute top-0 bottom-0 w-0.5 bg-slate-300 z-10" style="left: 43.33%"></div>
+                                <div class="h-full bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.3)] transition-all duration-1000" style="width: 43.33%"></div>
+                            </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-white/80">TKP</span>
-                            <span class="font-medium">≥ 166</span>
+
+                        <div class="group/item">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">TIU</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-sm font-extrabold text-blue-600 font-outfit">80</span>
+                                    <span class="text-[10px] font-bold text-slate-300">/ 175</span>
+                                </div>
+                            </div>
+                            <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden relative">
+                                {{-- Background threshold marker (45.7%) --}}
+                                <div class="absolute top-0 bottom-0 w-0.5 bg-slate-300 z-10" style="left: 45.71%"></div>
+                                <div class="h-full bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.3)] transition-all duration-1000" style="width: 45.71%"></div>
+                            </div>
                         </div>
-                        <div class="flex justify-between pt-2 mt-2 border-t border-white/20">
-                            <span class="text-white/80">Total Minimum</span>
-                            <span class="font-bold">311</span>
+
+                        <div class="group/item">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">TKP</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-sm font-extrabold text-blue-600 font-outfit">166</span>
+                                    <span class="text-[10px] font-bold text-slate-300">/ 225</span>
+                                </div>
+                            </div>
+                            <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden relative">
+                                {{-- Background threshold marker (73.7%) --}}
+                                <div class="absolute top-0 bottom-0 w-0.5 bg-slate-300 z-10" style="left: 73.77%"></div>
+                                <div class="h-full bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.3)] transition-all duration-1000" style="width: 73.77%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="pt-4 border-t border-slate-50 flex justify-between items-center">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">TOTAL TARGET</span>
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-sm font-extrabold text-slate-900 font-outfit">311</span>
+                                <span class="text-[10px] font-bold text-slate-400">/ 550</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </aside>
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const buyPackageBtn = document.getElementById('buyPackageBtn');
-
-        // Floating animation
-        let direction = 1;
-        let position = 0;
-
-        setInterval(() => {
-            position += 0.5 * direction;
-            if (position >= 5 || position <= -5) {
-                direction *= -1;
-            }
-            buyPackageBtn.style.transform = `translateY(${position}px)`;
-        }, 50);
-
-        // Pulse effect on the icon
-        const icon = buyPackageBtn.querySelector('.w-12');
-        setInterval(() => {
-            icon.classList.add('scale-110');
-            setTimeout(() => {
-                icon.classList.remove('scale-110');
-            }, 200);
-        }, 2000);
-    });
-</script>
