@@ -44,6 +44,9 @@
                             <span class="px-2 py-1 text-xs rounded-full {{ $pkg['is_active'] ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700' }}">
                                 {{ $pkg['is_active'] ? 'Aktif' : 'Nonaktif' }}
                             </span>
+                            @if($pkg['is_free'])
+                                <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-700">Free</span>
+                            @endif
                         </td>
                         <td class="px-4 py-3 text-right">
                             <button wire:click="toggleActive({{ $pkg['id'] }})" 
@@ -181,9 +184,15 @@
                         <textarea wire:model="formData.description" rows="2" class="w-full rounded-lg border-gray-300"></textarea>
                     </div>
 
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" wire:model="formData.is_active" id="is_active" class="rounded border-gray-300">
-                        <label for="is_active" class="text-sm text-gray-700">Aktif</label>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" wire:model="formData.is_active" id="is_active" class="rounded border-gray-300">
+                            <label for="is_active" class="text-sm text-gray-700">Aktif</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" wire:model="formData.is_free" id="is_free" class="rounded border-gray-300">
+                            <label for="is_free" class="text-sm text-gray-700">Gratis (Free Tryout)</label>
+                        </div>
                     </div>
                 </div>
 

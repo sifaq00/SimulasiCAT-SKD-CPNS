@@ -1,7 +1,7 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Hero Section --}}
-        <div class="text-center mb-12">
+        <div class="text-center mb-8">
             <h1 class="text-4xl font-bold text-gray-900 mb-4">
                 Simulasi SKD CPNS
             </h1>
@@ -11,14 +11,87 @@
             </p>
         </div>
 
+        {{-- Flash Sale Banner --}}
+        <div class="bg-gradient-to-r from-red-600 to-orange-500 rounded-2xl p-6 mb-12 text-white relative overflow-hidden"
+            x-data="flashSaleTimer()">
+            {{-- Background decoration --}}
+            <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+            
+            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start gap-2 mb-2">
+                        <span class="text-3xl">🔥</span>
+                        <span class="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold animate-pulse">FLASH SALE!</span>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-1">Diskon 30% Semua Paket!</h3>
+                    <p class="text-white/80">Gunakan kode <span class="bg-white/20 px-2 py-0.5 rounded font-mono font-bold">CPNS2026</span> saat checkout</p>
+                </div>
+                
+                {{-- Countdown Timer --}}
+                <div class="flex items-center gap-3">
+                    <div class="text-center bg-white/20 backdrop-blur rounded-lg p-3 min-w-[70px]">
+                        <p class="text-3xl font-bold" x-text="days">00</p>
+                        <p class="text-xs text-white/70">Hari</p>
+                    </div>
+                    <span class="text-2xl font-bold">:</span>
+                    <div class="text-center bg-white/20 backdrop-blur rounded-lg p-3 min-w-[70px]">
+                        <p class="text-3xl font-bold" x-text="hours">00</p>
+                        <p class="text-xs text-white/70">Jam</p>
+                    </div>
+                    <span class="text-2xl font-bold">:</span>
+                    <div class="text-center bg-white/20 backdrop-blur rounded-lg p-3 min-w-[70px]">
+                        <p class="text-3xl font-bold" x-text="minutes">00</p>
+                        <p class="text-xs text-white/70">Menit</p>
+                    </div>
+                    <span class="text-2xl font-bold">:</span>
+                    <div class="text-center bg-white/20 backdrop-blur rounded-lg p-3 min-w-[70px]">
+                        <p class="text-3xl font-bold" x-text="seconds">00</p>
+                        <p class="text-xs text-white/70">Detik</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function flashSaleTimer() {
+                return {
+                    days: '00',
+                    hours: '00',
+                    minutes: '00',
+                    seconds: '00',
+                    init() {
+                        // Set end date to 3 days from now (or use a fixed date)
+                        const endDate = new Date();
+                        endDate.setDate(endDate.getDate() + 3);
+                        endDate.setHours(23, 59, 59, 0);
+                        
+                        this.updateCountdown(endDate);
+                        setInterval(() => this.updateCountdown(endDate), 1000);
+                    },
+                    updateCountdown(endDate) {
+                        const now = new Date();
+                        const diff = endDate - now;
+                        
+                        if (diff > 0) {
+                            this.days = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                            this.hours = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                            this.minutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                            this.seconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+                        }
+                    }
+                }
+            }
+        </script>
+
         {{-- Stats --}}
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             <div class="bg-white rounded-xl shadow-sm p-6 text-center">
-                <p class="text-3xl font-bold text-blue-600">110</p>
+                <p class="text-3xl font-bold text-blue-600">{{ $packages[0]['total_questions'] ?? 110 }}</p>
                 <p class="text-gray-500">Soal per Paket</p>
             </div>
             <div class="bg-white rounded-xl shadow-sm p-6 text-center">
-                <p class="text-3xl font-bold text-blue-600">100</p>
+                <p class="text-3xl font-bold text-blue-600">{{ $packages[0]['duration_minutes'] ?? 100 }}</p>
                 <p class="text-gray-500">Menit Waktu</p>
             </div>
             <div class="bg-white rounded-xl shadow-sm p-6 text-center">
@@ -136,7 +209,7 @@
                     </svg>
                 </div>
                 <h3 class="font-semibold text-gray-900 mb-2">Timer Realistis</h3>
-                <p class="text-gray-500">Waktu 100 menit seperti tes sesungguhnya</p>
+                <p class="text-gray-500">Waktu {{ $packages[0]['duration_minutes'] ?? 100 }} menit seperti tes sesungguhnya</p>
             </div>
             <div class="text-center p-6">
                 <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">

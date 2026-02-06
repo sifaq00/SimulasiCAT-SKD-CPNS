@@ -21,12 +21,14 @@ class Package extends Model
         'total_questions',
         'duration_minutes',
         'is_active',
+        'is_free',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'bundle_price' => 'decimal:2',
         'is_active' => 'boolean',
+        'is_free' => 'boolean',
     ];
 
     /**

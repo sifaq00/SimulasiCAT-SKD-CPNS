@@ -1,0 +1,4 @@
+CategoryCode,QuestionText,OptionA,OptionB,OptionC,OptionD,OptionE,Explanation,OrderNumber
+TWK,Apa lambang sila pertama Pancasila?,Bintang|0|true,Rantai|0|false,Pohon Beringin|0|false,Kepala Banteng|0|false,Padi Kapas|0|false,Bintang adalah lambang sila pertama.,1
+TIU,1 + 1 = ...,2|0|true,3|0|false,4|0|false,5|0|false,6|0|false,Penjumlahan dasar.,1
+TKP,"Sikap Anda jika melihat rekan kerja kesulitan adalah...",Membantu langsung|5|true,Melihat saja|1|false,Melaporkan ke atasan|3|false,Memberi semangat|4|false,Pura-pura tidak tahu|0|false,Membantu rekan adalah integritas.,1
