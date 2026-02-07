@@ -102,13 +102,16 @@ class Simulation extends Component
     public function selectAnswer(int $optionId)
     {
         $question = $this->getCurrentQuestion();
-        if (!$question) return;
+        if (!$question)
+            return;
 
         try {
             $this->testService->submitAnswer($this->attempt, $question['id'], $optionId);
 
             // Update local state
             $this->questions[$this->currentQuestionIndex]['selected_option_id'] = $optionId;
+
+            // Refresh the attempt to get fresh userAnswers
             $this->loadNavigation();
         } catch (\Exception $e) {
             if (str_contains($e->getMessage(), 'expired')) {
@@ -122,7 +125,8 @@ class Simulation extends Component
     public function toggleBookmark()
     {
         $question = $this->getCurrentQuestion();
-        if (!$question) return;
+        if (!$question)
+            return;
 
         $isBookmarked = $this->testService->toggleBookmark($this->attempt, $question['id']);
         $this->questions[$this->currentQuestionIndex]['is_bookmarked'] = $isBookmarked;

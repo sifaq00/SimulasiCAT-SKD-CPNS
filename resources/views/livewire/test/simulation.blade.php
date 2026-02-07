@@ -1,21 +1,31 @@
-<div class="flex flex-col min-h-screen" x-data="{ showSubmitModal: false }">
+<div class="flex flex-col min-h-screen" x-data="{ showSubmitModal: false, showMobileMenu: false }">
     {{-- Header --}}
     <header class="sticky top-0 z-50 bg-white border-b shadow-sm">
-        <div class="flex items-center justify-between px-4 py-3 mx-auto max-w-7xl">
-            {{-- Package Info --}}
-            <div>
-                <h1 class="text-lg font-semibold text-gray-800">{{ $package->name }}</h1>
-                <p class="text-sm text-gray-500">{{ $navigation['answered_count'] ?? 0 }}/{{ $totalQuestions }} soal terjawab</p>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between px-3 sm:px-4 py-3 mx-auto max-w-7xl gap-3">
+            {{-- Package Info & Mobile Toggle --}}
+            <div class="flex items-center gap-3 min-w-0">
+                <button
+                    @click="showMobileMenu = true"
+                    class="p-2 -ml-2 text-gray-600 rounded-lg lg:hidden hover:bg-gray-100"
+                >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <div class="min-w-0">
+                    <h1 class="text-base sm:text-lg font-semibold text-gray-800 truncate">{{ $package->name }}</h1>
+                    <p class="text-xs sm:text-sm text-gray-500">{{ $navigation['answered_count'] ?? 0 }}/{{ $totalQuestions }} soal terjawab</p>
+                </div>
             </div>
 
             {{-- Timer --}}
-            <div class="flex items-center gap-4">
+            <div class="flex flex-row items-center gap-2 w-full sm:w-auto">
                 <div
-                    class="flex items-center gap-2 px-4 py-2 font-mono text-lg rounded-lg"
+                    class="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 font-mono text-base sm:text-lg rounded-lg"
                     x-data="timer({{ $remainingTime }})"
                     :class="minutes < 10 ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'"
                 >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     <span x-text="display"></span>
@@ -23,9 +33,9 @@
 
                 <button
                     @click="showSubmitModal = true"
-                    class="flex items-center gap-2 px-4 py-2 font-medium text-white bg-green-600 rounded-lg hover:bg-green-700"
+                    class="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 font-medium text-sm sm:text-base text-white bg-green-600 rounded-lg hover:bg-green-700"
                 >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
                     Selesai
@@ -34,16 +44,106 @@
         </div>
     </header>
 
-    <div class="flex flex-1">
+
+    {{-- Mobile Navigation Drawer --}}
+    <div
+        x-show="showMobileMenu"
+        class="fixed inset-0 z-40 lg:hidden"
+        style="z-index: 40;"
+        role="dialog"
+        aria-modal="true"
+    >
+        {{-- Backdrop --}}
+        <div
+            x-show="showMobileMenu"
+            x-transition:enter="transition-opacity ease-linear duration-300"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition-opacity ease-linear duration-300"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-black/50 backdrop-blur-sm"
+            @click="showMobileMenu = false"
+        ></div>
+
+        {{-- Drawer Panel --}}
+        <div
+            x-show="showMobileMenu"
+            x-transition:enter="transition ease-in-out duration-300 transform"
+            x-transition:enter-start="-translate-x-full"
+            x-transition:enter-end="translate-x-0"
+            x-transition:leave="transition ease-in-out duration-300 transform"
+            x-transition:leave-start="translate-x-0"
+            x-transition:leave-end="-translate-x-full"
+            class="relative flex flex-col w-full max-w-xs h-full bg-white shadow-xl"
+        >
+            {{-- Drawer Header --}}
+            <div class="flex items-center justify-between px-4 py-3 border-b">
+                <h2 class="text-lg font-semibold text-gray-800">Daftar Soal</h2>
+                <button @click="showMobileMenu = false" class="p-2 -mr-2 text-gray-600 rounded-lg hover:bg-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            {{-- Drawer Content (Copied from Sidebar) --}}
+            <div class="flex-1 px-4 py-4 overflow-y-auto">
+                @foreach($navigation['categories'] ?? [] as $category)
+                    <div class="mb-6" wire:key="mobile-category-{{ $category['code'] }}">
+                        <h3 class="mb-3 font-semibold text-gray-700 border-b pb-1">{{ $category['name'] }}</h3>
+                        <div class="grid grid-cols-5 gap-2">
+                            @foreach($category['questions'] as $q)
+                                <button
+                                    wire:click="goToQuestion({{ $q['number'] - 1 }}); showMobileMenu = false;"
+                                    wire:key="mobile-nav-btn-{{ $q['question_id'] }}"
+                                    class="h-10 rounded-lg text-sm font-bold flex items-center justify-center transition-colors shadow-sm
+                                        {{ $currentQuestionIndex == ($q['number'] - 1) ? 'ring-2 ring-blue-500 ring-offset-1' : '' }}
+                                        {{ $q['is_answered'] ? 'bg-green-500 text-white shadow-green-200' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}
+                                        {{ $q['is_bookmarked'] ? 'border-2 border-orange-400' : '' }}"
+                                >
+                                    {{ $q['number'] }}
+                                </button>
+                            @endforeach
+                        </div>
+                    </div>
+                @endforeach
+                
+                <div class="pt-4 mt-6 text-sm text-gray-600 border-t">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-4 h-4 bg-green-500 rounded"></span>
+                            <span>Sudah dijawab</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-4 h-4 bg-gray-200 rounded"></span>
+                            <span>Belum dijawab</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-4 h-4 bg-gray-200 border-2 border-orange-400 rounded"></span>
+                            <span>Ragu-ragu</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-4 h-4 bg-transparent border-2 border-blue-500 rounded"></span>
+                            <span>Posisi Sekarang</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-1 relative z-10">
         {{-- Sidebar Navigation --}}
         <aside class="hidden w-64 p-4 overflow-y-auto bg-white border-r lg:block">
             @foreach($navigation['categories'] ?? [] as $category)
-                <div class="mb-4">
+                <div class="mb-4" wire:key="category-{{ $category['code'] }}">
                     <h3 class="mb-2 font-semibold text-gray-700">{{ $category['name'] }}</h3>
                     <div class="grid grid-cols-5 gap-1">
                         @foreach($category['questions'] as $q)
                             <button
                                 wire:click="goToQuestion({{ $q['number'] - 1 }})"
+                                wire:key="nav-btn-{{ $q['question_id'] }}"
                                 class="w-8 h-8 rounded text-sm font-medium
                                     {{ $currentQuestionIndex == ($q['number'] - 1) ? 'ring-2 ring-blue-500' : '' }}
                                     {{ $q['is_answered'] ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700' }}
@@ -109,7 +209,9 @@
                     </div>
 
                     {{-- Options --}}
-                    <div class="space-y-3" x-data="{ selected: {{ $currentQuestion['selected_option_id'] ?? 'null' }} }">
+                    <div class="space-y-3" 
+                         x-data="{ selected: {{ $currentQuestion['selected_option_id'] ?? 'null' }} }"
+                         wire:ignore.self>
                         @foreach($currentQuestion['options'] as $option)
                             <button
                                 wire:click="selectAnswer({{ $option['id'] }})"
@@ -137,6 +239,7 @@
                             </button>
                         @endforeach
                     </div>
+
 
                     {{-- Navigation Buttons --}}
                     <div class="flex justify-between mt-8">
@@ -181,176 +284,184 @@
         </main>
     </div>
 
-    <div id="exam-block-overlay" style="display:none" class="fixed inset-0 z-50 flex items-center justify-center p-6 text-center bg-white">
+
+
+
+    {{-- Fullscreen Request Overlay --}}
+    <div id="exam-block-overlay" style="display:none" class="fixed inset-0 z-[90] flex items-center justify-center p-6 text-center bg-white">
         <div class="max-w-lg p-6 bg-white rounded-lg shadow-lg">
-            <h3 class="mb-2 text-lg font-semibold">Perhatian — Mode Ujian</h3>
-            <p class="mb-4 text-gray-700">Tampilan ujian harus dalam mode layar penuh dan aktif. Jika Anda keluar dari ujian, soal akan disembunyikan.</p>
-            <div class="flex justify-center gap-2">
-                <button id="enter-fullscreen-btn" class="px-4 py-2 text-white bg-blue-500 rounded-lg bg-s">Masuk Fullscreen</button>
-                <button id="request-return-btn" class="px-4 py-2 bg-gray-200 rounded-lg ">Saya Kembali</button>
-            </div>
-            <p class="mt-4 text-xs text-gray-500">Jika Anda sering berpindah aplikasi, pengawas akan diberitahu dan test dapat diblokir.</p>
+            <h3 class="mb-2 text-lg font-semibold">Mode Ujian Wajib Fullscreen</h3>
+            <p class="mb-4 text-gray-700">Untuk keamanan dan fokus, ujian ini wajib menggunakan mode layar penuh.</p>
+            <button id="enter-fullscreen-btn" class="px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-md">
+                Masuk Mode Fullscreen
+            </button>
         </div>
     </div>
 
-    {{-- Warning Modal --}}
-    @if($showWarning)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div class="max-w-md p-6 mx-4 bg-white rounded-xl">
-                <div class="flex items-center gap-3 mb-4">
-                    <svg class="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                    </svg>
-                    <h3 class="text-lg font-semibold">Peringatan</h3>
-                </div>
-                <p class="mb-4 text-gray-600">{{ $warningMessage }}</p>
-                <button
-                    wire:click="dismissWarning"
-                    class="w-full py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
-                >
-                    Mengerti
-                </button>
-            </div>
+    {{-- Security Overlay (Blank Screen) --}}
+    <div id="security-overlay" style="display: none;" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center text-center">
+        <div class="p-8">
+            <h3 class="mb-4 text-2xl font-bold text-gray-800">Mode Keamanan Aktif</h3>
+            <p class="text-gray-600">
+                Tampilan disembunyikan karena Anda berpindah ke tab atau aplikasi lain.
+                <br>Silakan kembali ke halaman ujian untuk melanjutkan.
+            </p>
+            <button id="resume-btn" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow hidden">
+                Saya Sudah Kembali
+            </button>
         </div>
-    @endif
+    </div>
 
     {{-- Submit Confirmation Modal --}}
-    <div x-show="showSubmitModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div class="max-w-md p-6 mx-4 bg-white rounded-xl">
-            <h3 class="mb-2 text-lg font-semibold">Konfirmasi Pengumpulan</h3>
-            <p class="mb-4 text-gray-600">
-                Anda yakin ingin mengumpulkan ujian?
-                <br><br>
-                <strong>{{ $navigation['answered_count'] ?? 0 }}</strong> dari <strong>{{ $totalQuestions }}</strong> soal terjawab.
-                @if(($navigation['bookmarked_count'] ?? 0) > 0)
-                    <br><strong>{{ $navigation['bookmarked_count'] }}</strong> soal ditandai ragu.
-                @endif
+    <div x-show="showSubmitModal" x-cloak class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm" style="z-index: 9999;">
+        <div class="max-w-md p-6 mx-4 bg-white rounded-2xl shadow-2xl relative z-[10000]" style="z-index: 10000;">
+            <h3 class="mb-2 text-xl font-bold text-gray-900 line-clamp-1">Konfirmasi Selesai Ujian</h3>
+            <p class="mb-6 text-gray-600 leading-relaxed">
+                Apakah Anda yakin ingin menyelesaikan ujian ini? <br><br>
+                Progress: <span class="font-bold text-blue-600">{{ $navigation['answered_count'] ?? 0 }}</span> dari {{ $totalQuestions }} soal sudah dijawab.
             </p>
             <div class="flex gap-3">
                 <button
                     @click="showSubmitModal = false"
-                    class="flex-1 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300"
+                    class="flex-1 py-3 font-semibold text-gray-700 transition-colors bg-gray-100 rounded-xl hover:bg-gray-200"
                 >
-                    Batal
+                    Nanti Dulu
                 </button>
                 <button
                     wire:click="submitTest"
-                    class="flex-1 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700"
+                    class="flex-1 py-3 font-semibold text-white transition-colors bg-green-600 rounded-xl hover:bg-green-700 shadow-lg shadow-green-200"
                 >
-                    Ya, Kumpulkan
+                    Ya, Selesai
                 </button>
             </div>
         </div>
     </div>
-
-    {{-- Timer Script --}}
-    <script>
-        function timer(seconds) {
-            return {
-                remaining: seconds,
-                display: '',
-                interval: null,
-
-                init() {
-                    this.updateDisplay();
-                    this.interval = setInterval(() => {
-                        this.remaining--;
-                        this.updateDisplay();
-
-                        if (this.remaining <= 0) {
-                            clearInterval(this.interval);
-                            Livewire.dispatch('timeExpired');
-                        }
-                    }, 1000);
-                },
-
-                get minutes() {
-                    return Math.floor(this.remaining / 60);
-                },
-
-                updateDisplay() {
-                    const mins = Math.floor(this.remaining / 60);
-                    const secs = this.remaining % 60;
-                    this.display = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-                }
-            }
-        }
-    </script>
-
+    
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+    
     <script>
         (function () {
-            const overlay = document.getElementById('exam-block-overlay');
+            const overlay = document.getElementById('exam-block-overlay');  // Fullscreen overlay z-90
+            const securityOverlay = document.getElementById('security-overlay'); // Blur overlay z-100
             const enterBtn = document.getElementById('enter-fullscreen-btn');
-            const returnBtn = document.getElementById('request-return-btn');
+            const resumeBtn = document.getElementById('resume-btn');
             const questionContent = document.getElementById('question-content');
 
-            function blockExam(reason) {
-                overlay.style.display = 'flex';
-                document.documentElement.requestFullscreen?.();
-                document.addEventListener('copy', preventCopy);
-                document.addEventListener('cut', preventCopy);
-                document.addEventListener('contextmenu', preventContext);
-                if (questionContent) questionContent.classList.add('opacity-0');
-                if (typeof Livewire !== 'undefined' && Livewire.emit) {
-                    Livewire.emit('recordTabSwitch');
-                }
-            }
+            // State
+            let isBlur = false;
+            let isFullscreen = false;
 
-            function unblockExam() {
+            function updateSecurityState() {
+                // Priority 1: Blur/Hidden (User is away) -> Show Security Overlay
+                if (isBlur) {
+                    securityOverlay.style.display = 'flex';
+                    document.title = "⚠️ TERDETEKSI KELUAR!";
+                    setTimeout(() => resumeBtn?.classList.remove('hidden'), 500); // Fail-safe button
+                    
+                    // Hide fullscreen overlay to avoid confusion behind it
+                    overlay.style.display = 'none';
+                    return;
+                } 
+
+                // Priority 2: Not Fullscreen (User is here but windowed) -> Show Fullscreen Request
+                if (!isFullscreen) {
+                    securityOverlay.style.display = 'none'; // Hide security blank (user returned)
+                    document.title = "{{ $package->name }}";
+                    
+                    overlay.style.display = 'flex'; // Show Fullscreen Request
+                    if (questionContent) questionContent.classList.add('opacity-0');
+                    return;
+                }
+
+                // Priority 3: All Good -> Show Content
+                securityOverlay.style.display = 'none';
                 overlay.style.display = 'none';
-                document.removeEventListener('copy', preventCopy);
-                document.removeEventListener('cut', preventCopy);
-                document.removeEventListener('contextmenu', preventContext);
                 if (questionContent) questionContent.classList.remove('opacity-0');
+                document.title = "{{ $package->name }}";
             }
 
-            function preventCopy(e) { e.preventDefault(); }
-            function preventContext(e) { e.preventDefault(); }
+            function checkStatus() {
+                // Update Fullscreen State
+                isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement);
+                
+                // Update Blur State (Managed by events, but double check visibility)
+                if (document.hidden) isBlur = true;
 
-            function checkCompliance() {
-                const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement);
-                const tooSmall = window.innerWidth < 1024 || window.innerHeight < 600;
-                if (!isFullscreen || tooSmall) {
-                    blockExam('not-compliant');
-                } else {
-                    unblockExam();
-                }
+                updateSecurityState();
             }
 
-            document.addEventListener('visibilitychange', function () {
-                if (document.hidden) blockExam('hidden');
+            // Events
+            document.addEventListener('visibilitychange', () => {
+                isBlur = document.hidden;
+                updateSecurityState();
             });
 
-            window.addEventListener('blur', function () {
-                blockExam('blur');
+            window.addEventListener('blur', () => {
+                isBlur = true;
+                updateSecurityState();
             });
 
-            window.addEventListener('focus', function () {
-                checkCompliance();
+            window.addEventListener('focus', () => {
+                isBlur = false;
+                updateSecurityState();
             });
 
-            document.addEventListener('fullscreenchange', checkCompliance);
-            window.addEventListener('resize', checkCompliance);
+            document.addEventListener('fullscreenchange', checkStatus);
+            window.addEventListener('resize', checkStatus);
 
+            // Polling (Safety Net for missed events)
+            setInterval(checkStatus, 1000);
+
+            // Button Listeners
             enterBtn?.addEventListener('click', function () {
-                (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen || document.documentElement.mozRequestFullScreen)?.call(document.documentElement).then(() => {
-                    setTimeout(checkCompliance, 300);
-                }).catch(() => {
-                    checkCompliance();
+                (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen || document.documentElement.mozRequestFullScreen)?.call(document.documentElement)
+                .then(() => { 
+                    isFullscreen = true;
+                    updateSecurityState();
+                })
+                .catch(err => { alert('Gagal masuk fullscreen: ' + err.message); });
+            });
+
+            resumeBtn?.addEventListener('click', function() {
+                isBlur = false;
+                updateSecurityState();
+                // If not fullscreen, updateSecurityState will show Fullscreen Request automatically
+            });
+
+            // Anti-Screenshot (Best Effort)
+            document.addEventListener('keydown', (e) => {
+                const isPrtSc = e.key == 'PrintScreen';
+                const isWinKey = e.key == 'Meta' || e.key == 'OS';
+                if (isPrtSc || isWinKey) {
+                    navigator.clipboard.writeText('');
+                    document.body.style.display = 'none';
+                    setTimeout(() => { document.body.style.display = 'block'; }, 2000);
+                }
+                if (e.ctrlKey && (e.key == 's' || e.key == 'u' || e.key == 'p')) e.preventDefault();
+            });
+
+            // Prevent Context Menu & Drag
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('dragstart', e => e.preventDefault());
+
+            // Lock Navigation
+            function lockNavigation() {
+                history.pushState(null, null, location.href);
+                window.onpopstate = function () { history.go(1); };
+                // window.onbeforeunload = function() { return "Ujian sedang berlangsung."; };
+                document.querySelectorAll('a').forEach(link => {
+                    if (link.href && !link.href.startsWith('javascript')) {
+                        link.addEventListener('click', (e) => { e.preventDefault(); alert("Navigasi dinonaktifkan!"); });
+                    }
                 });
-            });
-
-            returnBtn?.addEventListener('click', function () {
-                checkCompliance();
-            });
-
-            document.addEventListener('livewire:load', function () {
-                checkCompliance();
-            });
-
-            document.addEventListener('selectstart', function (e) { e.preventDefault(); });
-            document.addEventListener('dragstart', function (e) { e.preventDefault(); });
+            }
+            lockNavigation();
+            document.addEventListener('livewire:navigated', lockNavigation);
 
         })();
     </script>
+
 </div>

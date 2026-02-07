@@ -120,7 +120,7 @@ class PaymentController extends Controller
                     'invoice_number' => $existing->invoice_number,
                 ]);
             } catch (\Exception $e) {
-                Log::warning('Midtrans token generation failed for existing transaction: '.$e->getMessage());
+                Log::warning('Midtrans token generation failed for existing transaction: ' . $e->getMessage());
 
                 return response()->json([
                     'success' => false,
@@ -157,7 +157,7 @@ class PaymentController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal memproses pembayaran. Silakan coba lagi.',
+                'message' => 'Gagal memproses pembayaran: Koneksi ke server Midtrans terputus atau timeout. Silakan periksa koneksi internet Anda atau coba lagi beberapa saat lagi.',
             ], 500);
         }
     }

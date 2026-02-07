@@ -30,7 +30,7 @@ class LoginForm extends Form
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only(['email', 'password']), $this->remember)) {
+        if (!Auth::attempt($this->only(['email', 'password']), $this->remember)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -42,11 +42,11 @@ class LoginForm extends Form
 
         $intended = session()->get('url.intended', '');
 
-        if (Auth::check() && Auth::user()->email_verified_at === null && ! str_contains($intended, '/verify-email')) {
+        if (Auth::check() && Auth::user()->email_verified_at === null && !str_contains($intended, '/verify-email')) {
             Auth::logout();
 
             throw ValidationException::withMessages([
-                'form.email' => 'Your email address is not verified. Please check your inbox for the verification link.',
+                'form.email' => 'Email Anda belum diverifikasi. Silakan cek inbox email untuk link verifikasi.',
             ]);
         }
     }
@@ -56,7 +56,7 @@ class LoginForm extends Form
      */
     protected function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -77,6 +77,6 @@ class LoginForm extends Form
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
     }
 }

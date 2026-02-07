@@ -87,7 +87,5 @@
         // Disabled for development - enable in production
     </script>
     -->
-
-    @livewireScripts
 </body>
 </html>

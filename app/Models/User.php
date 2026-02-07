@@ -199,4 +199,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new \App\Notifications\ResetPasswordNotification($token));
     }
+
+    /**
+     * Send the email verification notification (queued for async).
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new \App\Notifications\VerifyEmailNotification);
+    }
 }

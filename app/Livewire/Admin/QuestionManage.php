@@ -263,7 +263,7 @@ class QuestionManage extends Component
         session()->flash('success', 'Soal berhasil dihapus!');
     }
 
-    public function closeForm()
+    public function cancelEdit()
     {
         $this->showForm = false;
         $this->editingId = null;

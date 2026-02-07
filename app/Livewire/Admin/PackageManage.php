@@ -46,6 +46,7 @@ class PackageManage extends Component
         'formData.price' => 'required|numeric|min:0',
         'formData.total_questions' => 'required|integer|min:1',
         'formData.duration_minutes' => 'required|integer|min:1',
+        'formData.is_free' => 'boolean',
     ];
 
     protected $bundleRules = [
@@ -141,13 +142,21 @@ class PackageManage extends Component
     {
         $package = Package::findOrFail($id);
 
-        if ($package->questions()->count() > 0) {
-            session()->flash('error', 'Tidak bisa menghapus paket yang sudah memiliki soal!');
+        // Check transactions first (safety from breaking history)
+        if ($package->transactions()->exists()) {
+            session()->flash('error', 'Tidak bisa menghapus paket yang sudah pernah dibeli user!');
             return;
         }
 
+        // Questions will be deleted by database cascade constraint
+        // But for safety, we can manually delete related data if needed
+        // $package->questions()->delete(); 
+
+        // Also detach from bundles
+        $package->bundles()->detach();
+
         $package->delete();
-        session()->flash('success', 'Paket berhasil dihapus!');
+        session()->flash('success', 'Paket dan semua soal terkait berhasil dihapus!');
         $this->loadPackages();
     }
 

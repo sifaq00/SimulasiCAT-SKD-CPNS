@@ -1,6 +1,6 @@
 @props(['packages', 'bundles'])
 
-<section class="py-20 lg:py-28 relative overflow-hidden bg-slate-900">
+<section id="pricing" class="py-20 lg:py-28 relative overflow-hidden bg-slate-900">
     {{-- Background Decorations --}}
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/10 blur-[120px] rounded-full"></div>

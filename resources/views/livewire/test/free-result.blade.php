@@ -11,31 +11,31 @@
         </div>
 
         {{-- Success Banner --}}
-        <div class="bg-gradient-to-br from-blue-700 to-indigo-800 rounded-3xl p-8 mb-12 text-white relative overflow-hidden shadow-2xl">
+        <div class="bg-gradient-to-br from-blue-700 to-indigo-800 rounded-3xl p-6 md:p-8 mb-8 md:mb-12 text-white relative overflow-hidden shadow-2xl">
             {{-- Decoration --}}
             <div class="absolute -right-20 -top-20 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
             <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl"></div>
             
             <div class="relative z-10 flex flex-col items-center text-center">
-                <div class="w-24 h-24 bg-white/15 backdrop-blur-md rounded-full flex items-center justify-center mb-6 shadow-xl border border-white/20">
-                    <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-20 h-20 md:w-24 md:h-24 bg-white/15 backdrop-blur-md rounded-full flex items-center justify-center mb-6 shadow-xl border border-white/20">
+                    <svg class="w-10 h-10 md:w-12 md:h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138z"></path>
                     </svg>
                 </div>
                 
-                <h2 class="text-3xl font-black mb-2 tracking-tight">HASIL LATIHAN GUEST</h2>
-                <p class="text-blue-100 text-lg mb-8 max-w-xl">
+                <h2 class="text-2xl md:text-3xl font-black mb-2 tracking-tight">HASIL LATIHAN GUEST</h2>
+                <p class="text-blue-100 text-base md:text-lg mb-8 max-w-xl">
                     Luar biasa! Kamu telah menyelesaikan uji coba simulasi CAT CPNS 2026. Lihat progresmu di bawah ini.
                 </p>
 
                 <div class="flex flex-wrap justify-center gap-4">
                     <div class="px-6 py-3 bg-white/20 backdrop-blur-md rounded-2xl border border-white/10">
                         <span class="block text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Total Skor</span>
-                        <span class="text-4xl font-black">{{ $result['total_score'] }}</span>
+                        <span class="text-3xl md:text-4xl font-black">{{ $result['total_score'] }}</span>
                     </div>
                     <div class="px-6 py-3 bg-white/20 backdrop-blur-md rounded-2xl border border-white/10">
                         <span class="block text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Status Lulus</span>
-                        <span class="text-2xl font-black uppercase tracking-tight">
+                        <span class="text-xl md:text-2xl font-black uppercase tracking-tight">
                             {{ $result['passed_overall'] ? 'LULUS SKD' : 'BELUM LULUS' }}
                         </span>
                     </div>
@@ -44,14 +44,14 @@
         </div>
 
         {{-- Score Details --}}
-        <div class="grid md:grid-cols-3 gap-8 mb-12">
+        <div class="grid md:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-12">
             @foreach(['twk' => 'Tes Wawasan Kebangsaan', 'tiu' => 'Tes Intelegensia Umum', 'tkp' => 'Tes Karakteristik Pribadi'] as $key => $title)
-                <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm relative overflow-hidden group hover:shadow-xl transition-all">
+                <div class="bg-white rounded-3xl p-6 md:p-8 border border-gray-100 shadow-sm relative overflow-hidden group hover:shadow-xl transition-all">
                     <div class="relative z-10">
                         <h4 class="text-gray-400 font-bold text-xs uppercase tracking-widest mb-4">{{ $title }}</h4>
                         <div class="flex items-end justify-between mb-6">
-                            <span class="text-5xl font-black text-slate-800">{{ $result['scores'][$key]['score'] }}</span>
-                            <span class="text-sm font-medium text-slate-400 mb-2">/ PG: {{ $result['scores'][$key]['passing_grade'] }}</span>
+                            <span class="text-4xl md:text-5xl font-black text-slate-800">{{ $result['scores'][$key]['score'] }}</span>
+                            <span class="text-xs md:text-sm font-medium text-slate-400 mb-2">/ PG: {{ $result['scores'][$key]['passing_grade'] }}</span>
                         </div>
 
                         <div class="w-full bg-gray-100 rounded-full h-3 mb-6">
@@ -69,14 +69,14 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                     </svg>
                                 </span>
-                                <span class="text-sm font-bold text-green-600 uppercase tracking-tight">Memenuhi Ambang Batas</span>
+                                <span class="text-xs md:text-sm font-bold text-green-600 uppercase tracking-tight">Memenuhi Ambang Batas</span>
                             @else
                                 <span class="flex-shrink-0 w-6 h-6 bg-red-100 text-red-600 rounded-full flex items-center justify-center">
                                     <svg class="w-4 h-4 shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                     </svg>
                                 </span>
-                                <span class="text-sm font-bold text-red-600 uppercase tracking-tight">Dibawah Ambang Batas</span>
+                                <span class="text-xs md:text-sm font-bold text-red-600 uppercase tracking-tight">Dibawah Ambang Batas</span>
                             @endif
                         </div>
                     </div>
@@ -85,7 +85,7 @@
         </div>
 
         {{-- PROMOTION SECTION (REACTIVE & CREATIVE) --}}
-        <div class="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[2.5rem] p-12 mb-12 text-white shadow-2xl relative overflow-hidden">
+        <div class="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[2.5rem] p-6 md:p-12 mb-8 md:mb-12 text-white shadow-2xl relative overflow-hidden">
             {{-- Background Effects --}}
             <div class="absolute right-0 top-0 w-1/3 h-full opacity-20 transform translate-x-1/4">
                 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">

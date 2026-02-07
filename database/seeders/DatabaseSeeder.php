@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,9 +15,10 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             PackageSeeder::class,
             BundleSeeder::class,
+            QuestionSeeder::class,
             AdminSeeder::class,
-            // Uncomment to seed sample questions (takes time)
-            // SampleQuestionSeeder::class,
         ]);
+
+        $this->command->info('🎉 Database seeding completed successfully!');
     }
 }

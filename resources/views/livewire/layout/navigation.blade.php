@@ -19,20 +19,18 @@ new class extends Component
 <nav x-data="{ open: false }" class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200 shadow-sm">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-20">
+        <div class="flex justify-between h-16 md:h-20">
             <div class="flex items-center gap-10">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ auth()->check() ? route('dashboard') : url('/') }}" class="flex items-center gap-3 group transition-all hover:opacity-80">
-                         <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-                            <span class="text-white font-bold text-lg font-outfit">S</span>
-                        </div>
+                        <img src="{{ asset('assets/logo.png') }}" alt="Simulasi CPNS" class="w-8 h-8 md:w-10 md:h-10 drop-shadow-sm">
                         <span class="text-slate-900 font-extrabold text-xl hidden sm:block font-outfit tracking-tight">Simulasi CPNS</span>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-1 sm:flex h-20">
+                <div class="hidden space-x-1 sm:flex h-full">
                     @auth
                         <a href="{{ route('dashboard') }}" 
                            class="inline-flex items-center px-4 h-full border-b-2 {{ request()->routeIs('dashboard') ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-50' }} text-sm font-semibold transition duration-200 ease-in-out font-outfit"
@@ -100,14 +98,16 @@ new class extends Component
 
                                     <div class="border-t border-slate-100 my-2"></div>
 
-                                    <button wire:click="logout" class="w-full text-start">
-                                        <x-dropdown-link class="rounded-xl px-4 py-2.5 text-red-600 hover:text-red-700 hover:bg-red-50 font-semibold font-outfit text-sm">
-                                            <div class="flex items-center gap-3">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                                                Keluar
-                                            </div>
-                                        </x-dropdown-link>
-                                    </button>
+                                    <form wire:submit="logout">
+                                        <button type="submit" class="w-full">
+                                            <x-dropdown-link class="rounded-xl px-4 py-2.5 text-red-600 hover:text-red-700 hover:bg-red-50 font-semibold font-outfit text-sm">
+                                                <div class="flex items-center gap-3">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                                                    Keluar
+                                                </div>
+                                            </x-dropdown-link>
+                                        </button>
+                                    </form>
                                 </div>
                             </x-slot>
                         </x-dropdown>
@@ -175,11 +175,13 @@ new class extends Component
                         </x-responsive-nav-link>
                     @endif
 
-                    <button wire:click="logout" class="w-full text-start">
-                        <x-responsive-nav-link class="text-red-600 font-semibold font-outfit">
-                            Keluar
-                        </x-responsive-nav-link>
-                    </button>
+                    <form wire:submit="logout">
+                        <button type="submit" class="w-full text-start">
+                            <x-responsive-nav-link class="text-red-600 font-semibold font-outfit">
+                                Keluar
+                            </x-responsive-nav-link>
+                        </button>
+                    </form>
                 </div>
             @else
                 <div class="px-4 py-6 space-y-3">
