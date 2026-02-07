@@ -1,9 +1,19 @@
 @props(['package' => null])
-<section class="landing-hero min-h-screen flex items-center relative overflow-hidden pt-16">
-    {{-- Animated Background Blobs --}}
-    <div class="blob blob-1 w-[500px] h-[500px] bg-blue-600 -top-40 -left-40"></div>
-    <div class="blob blob-2 w-[400px] h-[400px] bg-purple-600 top-1/3 -right-20"></div>
-    <div class="blob blob-3 w-[300px] h-[300px] bg-cyan-500 bottom-10 left-1/4"></div>
+<section class="landing-hero min-h-screen flex items-center relative overflow-hidden pt-16 bg-[#020617]">
+    {{-- Dynamic Nebula Glow Blobs (Moving!) --}}
+    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="nebula-blob w-[400px] h-[400px] bg-cyan-600/60 -top-20 -left-20 animate-nebula-1"></div>
+        <div class="nebula-blob w-[350px] h-[350px] bg-indigo-600/50 top-1/4 -right-10 animate-nebula-2"></div>
+        <div class="nebula-blob w-[300px] h-[300px] bg-emerald-500/40 bottom-10 left-1/4 animate-nebula-3"></div>
+        
+        {{-- Floating Glow Sparks --}}
+        @for($i = 0; $i < 15; $i++)
+            <div class="absolute w-1 h-1 bg-white rounded-full opacity-[0.15] animate-float-spark" 
+                 style="top: {{ rand(0, 100) }}%; left: {{ rand(0, 100) }}%; 
+                        animation-delay: {{ $i * 0.5 }}s; 
+                        animation-duration: {{ 10 + rand(5, 15) }}s;"></div>
+        @endfor
+    </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 relative z-10">
         <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -27,17 +37,19 @@
 
                 {{-- CTA Buttons --}}
                 <div class="flex flex-col sm:flex-row gap-4 mb-12">
-                    <a href="{{ route('test.free-simulation') }}" class="btn-primary px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 group">
-                        Mulai Latihan Gratis
-                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('test.free-simulation') }}" class="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-[0_10px_30px_rgba(37,99,235,0.3)] hover:shadow-[0_15px_40px_rgba(37,99,235,0.4)] transition-all hover:-translate-y-0.5 overflow-hidden">
+                        <div class="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-700 -translate-x-full skew-x-12"></div>
+                        <span class="relative">Mulai Latihan Gratis</span>
+                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform relative" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
                     </a>
-                    <a href="#pricing" class="px-8 py-4 btn-secondary text-white rounded-xl font-semibold text-lg flex items-center justify-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="#pricing" class="group relative px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-white/10 hover:border-white/20 transition-all hover:-translate-y-0.5 overflow-hidden">
+                        <div class="absolute inset-0 bg-white/10 group-hover:translate-x-full transition-transform duration-700 -translate-x-full skew-x-12"></div>
+                        <svg class="w-5 h-5 relative" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                         </svg>
-                        Lihat Paket
+                        <span class="relative">Lihat Paket</span>
                     </a>
                 </div>
 

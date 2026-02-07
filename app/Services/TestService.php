@@ -98,8 +98,9 @@ class TestService
             ->with('category')
             ->orderBy('order_number')
             ->get();
-            
-        $answers = $attempt->userAnswers->keyBy('question_id');
+
+        // IMPORTANT: Load fresh userAnswers to get latest data after save
+        $answers = $attempt->userAnswers()->get()->keyBy('question_id');
 
         $categories = [];
         foreach ($questions as $question) {
@@ -111,9 +112,9 @@ class TestService
                     'questions' => [],
                 ];
             }
-            
+
             $answer = $answers->get($question->id);
-            
+
             $categories[$code]['questions'][] = [
                 'number' => $question->order_number,
                 'question_id' => $question->id,
@@ -222,8 +223,8 @@ class TestService
             'package' => $attempt->package->name,
             'started_at' => $attempt->started_at->format('d M Y H:i'),
             'finished_at' => $attempt->finished_at?->format('d M Y H:i'),
-            'duration_minutes' => $attempt->started_at && $attempt->finished_at 
-                ? $attempt->started_at->diffInMinutes($attempt->finished_at) 
+            'duration_minutes' => $attempt->started_at && $attempt->finished_at
+                ? $attempt->started_at->diffInMinutes($attempt->finished_at)
                 : null,
             'scores' => [
                 'twk' => [

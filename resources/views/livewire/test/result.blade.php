@@ -1,4 +1,4 @@
-<div class="py-12 bg-gray-50/50 min-h-screen font-sans">
+<div class="py-12 pt-20 md:pt-28 bg-gray-50/50 min-h-screen font-sans">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Top Navigation --}}
         <div class="mb-8 flex items-center justify-between">
@@ -14,40 +14,40 @@
         </div>
 
         {{-- Success/Failure Banner --}}
-        <div class="bg-gradient-to-br {{ $result['passed_overall'] ? 'from-green-600 to-emerald-800' : 'from-red-600 to-rose-800' }} rounded-[2.5rem] p-8 md:p-12 mb-10 text-white relative overflow-hidden shadow-2xl">
+        <div class="bg-gradient-to-br {{ $result['passed_overall'] ? 'from-green-600 to-emerald-800' : 'from-red-600 to-rose-800' }} rounded-[2.5rem] p-6 md:p-12 mb-8 md:mb-10 text-white relative overflow-hidden shadow-2xl">
             {{-- Decoration --}}
             <div class="absolute -right-20 -top-20 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
             <div class="absolute -left-20 -bottom-20 w-80 h-80 {{ $result['passed_overall'] ? 'bg-emerald-400/20' : 'bg-rose-400/20' }} rounded-full blur-3xl"></div>
             
             <div class="relative z-10 flex flex-col items-center text-center">
-                <div class="w-24 h-24 bg-white/15 backdrop-blur-md rounded-3xl flex items-center justify-center mb-8 shadow-xl border border-white/20 rotate-3">
+                <div class="w-20 h-20 md:w-24 md:h-24 bg-white/15 backdrop-blur-md rounded-3xl flex items-center justify-center mb-6 md:mb-8 shadow-xl border border-white/20 rotate-3">
                     @if($result['passed_overall'])
-                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-10 h-10 md:w-12 md:h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     @else
-                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-10 h-10 md:w-12 md:h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     @endif
                 </div>
                 
-                <h1 class="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase font-outfit">
+                <h1 class="text-2xl md:text-5xl font-black mb-4 tracking-tighter uppercase font-outfit leading-tight">
                     {{ $result['passed_overall'] ? 'Selamat! Anda LULUS' : 'Maaf, Anda TIDAK LULUS' }}
                 </h1>
-                <p class="text-white/80 text-lg mb-10 max-w-xl font-medium">
+                <p class="text-white/80 text-base md:text-lg mb-8 md:mb-10 max-w-xl font-medium">
                     Hasil ujian simulasi {{ $result['package'] }} Anda telah dianalisis.
                 </p>
 
-                <div class="flex flex-wrap justify-center gap-6">
-                    <div class="px-8 py-4 bg-white/15 backdrop-blur-md rounded-3xl border border-white/10">
+                <div class="flex flex-wrap justify-center gap-4 md:gap-6">
+                    <div class="px-6 py-3 md:px-8 md:py-4 bg-white/15 backdrop-blur-md rounded-3xl border border-white/10">
                         <span class="block text-white/70 text-[10px] font-black uppercase tracking-widest mb-1">Total Skor</span>
-                        <span class="text-5xl font-black font-outfit">{{ $result['total_score'] }}</span>
-                        <span class="text-sm text-white/50 ml-1">/ {{ $result['max_total_score'] }}</span>
+                        <span class="text-4xl md:text-5xl font-black font-outfit">{{ $result['total_score'] }}</span>
+                        <span class="text-xs md:text-sm text-white/50 ml-1">/ {{ $result['max_total_score'] }}</span>
                     </div>
-                    <div class="px-8 py-4 bg-white/15 backdrop-blur-md rounded-3xl border border-white/10 flex flex-col justify-center">
+                    <div class="px-6 py-3 md:px-8 md:py-4 bg-white/15 backdrop-blur-md rounded-3xl border border-white/10 flex flex-col justify-center">
                         <span class="block text-white/70 text-[10px] font-black uppercase tracking-widest mb-1">Status Akhir</span>
-                        <span class="text-2xl font-black uppercase tracking-tight font-outfit">
+                        <span class="text-xl md:text-2xl font-black uppercase tracking-tight font-outfit">
                             {{ $result['passed_overall'] ? 'MEMENUHI PG' : 'TIDAK LULUS PG' }}
                         </span>
                     </div>
@@ -56,7 +56,7 @@
         </div>
 
         {{-- Bento-style Score Detail Grid --}}
-        <div class="grid md:grid-cols-3 gap-8 mb-10">
+        <div class="grid md:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-10">
             @foreach(['twk', 'tiu', 'tkp'] as $category)
                 @php 
                     $score = $result['scores'][$category]; 
@@ -66,16 +66,16 @@
                         'tkp' => 'Tes Karakteristik Pribadi'
                     ];
                 @endphp
-                <div class="bg-white rounded-[2rem] p-8 border border-gray-100 shadow-sm relative overflow-hidden group hover:shadow-xl transition-all">
+                <div class="bg-white rounded-[2rem] p-6 md:p-8 border border-gray-100 shadow-sm relative overflow-hidden group hover:shadow-xl transition-all">
                     <div class="relative z-10">
                         <h4 class="text-gray-400 font-black text-[10px] uppercase tracking-widest mb-4">{{ $catTitles[$category] }}</h4>
                         <div class="flex items-end justify-between mb-6">
-                            <span class="text-5xl font-black text-slate-900 font-outfit {{ $score['passed'] ? 'text-green-600' : 'text-red-600' }}">
+                            <span class="text-4xl md:text-5xl font-black text-slate-900 font-outfit {{ $score['passed'] ? 'text-green-600' : 'text-red-600' }}">
                                 {{ $score['score'] }}
                             </span>
                             <div class="text-right">
                                 <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Passing Grade</span>
-                                <span class="text-sm font-bold text-slate-800">{{ $score['passing_grade'] }}</span>
+                                <span class="text-xs md:text-sm font-bold text-slate-800">{{ $score['passing_grade'] }}</span>
                             </div>
                         </div>
 
@@ -109,14 +109,14 @@
         </div>
 
         {{-- Exam Info Summary --}}
-        <div class="bg-white rounded-[2rem] p-8 mb-10 border border-gray-100 shadow-sm">
-            <h3 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center gap-2">
+        <div class="bg-white rounded-[2rem] p-6 md:p-8 mb-8 md:mb-10 border border-gray-100 shadow-sm">
+            <h3 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-6 md:mb-8 flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 Informasi Ujian
             </h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
                 <div class="flex flex-col gap-1">
                     <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Mulai</span>
                     <span class="text-sm font-bold text-slate-800">{{ $result['started_at'] }}</span>

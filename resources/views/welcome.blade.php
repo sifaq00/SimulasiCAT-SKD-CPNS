@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800|plus-jakarta-sans:400,500,600,700,800&display=swap" rel="stylesheet" />
     
+    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
@@ -85,6 +86,55 @@
             transform: translateY(-8px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
+
+        @keyframes float-spark {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.15; }
+            33% { transform: translateY(-30px) translateX(20px); opacity: 0.3; }
+            66% { transform: translateY(15px) translateX(-15px); opacity: 0.1; }
+        }
+        .animate-float-spark {
+            animation: float-spark linear infinite;
+        }
+
+        .nebula-blob {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(100px);
+            opacity: 0.7;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            will-change: transform;
+        }
+
+        @keyframes nebula-orbit-1 {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(40vw, 10vh); }
+            50% { transform: translate(70vw, 50vh); }
+            75% { transform: translate(20vw, 80vh); }
+            100% { transform: translate(0, 0); }
+        }
+
+        @keyframes nebula-orbit-2 {
+            0% { transform: translate(0, 0); }
+            33% { transform: translate(-30vw, 40vh); }
+            66% { transform: translate(30vw, 70vh); }
+            100% { transform: translate(0, 0); }
+        }
+
+        @keyframes nebula-orbit-3 {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(50vw, -40vh); }
+            100% { transform: translate(0, 0); }
+        }
+
+        @keyframes nebula-pulse {
+            0%, 100% { opacity: 0.5; scale: 1; }
+            50% { opacity: 0.8; scale: 1.1; }
+        }
+
+        .animate-nebula-1 { animation: nebula-orbit-1 30s linear infinite, nebula-pulse 10s ease-in-out infinite; }
+        .animate-nebula-2 { animation: nebula-orbit-2 35s linear infinite, nebula-pulse 12s ease-in-out infinite; }
+        .animate-nebula-3 { animation: nebula-orbit-3 40s linear infinite, nebula-pulse 15s ease-in-out infinite; }
     </style>
 </head>
 <body class="antialiased">
@@ -115,5 +165,7 @@
 
     {{-- Shared Footer --}}
     <x-landing.footer />
+    
+    @livewireScripts
 </body>
 </html>

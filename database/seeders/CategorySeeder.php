@@ -2,14 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
 use Illuminate\Database\Seeder;
+use App\Models\Category;
 
 class CategorySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $categories = [
@@ -21,7 +18,7 @@ class CategorySeeder extends Seeder
                 'question_count' => 30,
             ],
             [
-                'name' => 'Tes Intelegensi Umum',
+                'name' => 'Tes Intelegensia Umum',
                 'code' => 'TIU',
                 'passing_grade' => 80,
                 'max_score' => 175,
@@ -36,11 +33,13 @@ class CategorySeeder extends Seeder
             ],
         ];
 
-        foreach ($categories as $category) {
+        foreach ($categories as $categoryData) {
             Category::updateOrCreate(
-                ['code' => $category['code']],
-                $category
+                ['code' => $categoryData['code']],
+                $categoryData
             );
         }
+
+        $this->command->info('✅ Categories seeded successfully!');
     }
 }

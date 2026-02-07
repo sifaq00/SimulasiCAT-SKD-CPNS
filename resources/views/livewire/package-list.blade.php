@@ -1,4 +1,4 @@
-<div class="py-12 pt-28 min-h-screen bg-slate-50 relative overflow-hidden">
+<div class="py-6 pt-20 md:py-12 md:pt-28 min-h-screen bg-slate-50 relative overflow-hidden">
     {{-- Subtle Background Accents --}}
     <div class="fixed top-0 left-0 w-full h-full pointer-events-none">
         <div class="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full"></div>
@@ -7,67 +7,67 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {{-- Hero Section --}}
-        <div class="text-center mb-16">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 font-jakarta tracking-tight leading-tight flex items-center justify-center gap-3">
+        <div class="text-center mb-10 md:mb-16">
+            <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 md:mb-6 font-jakarta tracking-tight leading-tight flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                 Pilih <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Paket Simulasi</span> Kamu
-                <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                <svg class="w-6 h-6 sm:w-10 sm:h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
             </h1>
-            <p class="text-lg text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed">
+            <p class="text-sm md:text-lg text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed">
                 Persiapkan dirimu dengan ribuan soal berkualitas yang dirancang khusus menyerupai tes SKD CPNS sesungguhnya.
             </p>
         </div>
 
         {{-- Flash Sale Banner (Glassmorphism) --}}
-        <div class="relative group mb-16" x-data="flashSaleTimer()">
+        <div class="relative group mb-10 md:mb-16" x-data="flashSaleTimer()">
             <div class="absolute inset-0 bg-gradient-to-r from-rose-500 to-orange-500 rounded-[2rem] blur-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
             
-            <div class="relative bg-white/60 backdrop-blur-2xl rounded-[2rem] border border-white/40 p-8 md:p-10 shadow-xl overflow-hidden">
+            <div class="relative bg-white/60 backdrop-blur-2xl rounded-[2rem] border border-white/40 p-6 md:p-10 shadow-xl overflow-hidden">
                 {{-- Decorative blobs --}}
                 <div class="absolute top-0 right-0 w-64 h-64 bg-rose-500/10 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
                 <div class="absolute bottom-0 left-0 w-48 h-48 bg-orange-500/10 blur-[60px] rounded-full translate-y-1/2 -translate-x-1/2"></div>
                 
-                <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
+                <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-10">
                     <div class="text-center lg:text-left flex-1">
-                        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-rose-600 text-white rounded-full text-xs font-black tracking-widest uppercase mb-4 animate-bounce shadow-lg shadow-rose-500/30">
-                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-1.336-1.15-2.103a11.97 11.97 0 00-.405-1.394 1 1 0 00-.003-.004z" clip-rule="evenodd" /></svg>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 bg-rose-600 text-white rounded-full text-[10px] md:text-xs font-black tracking-widest uppercase mb-4 animate-bounce shadow-lg shadow-rose-500/30">
+                            <svg class="w-3 md:w-3.5 h-3 md:h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-1.336-1.15-2.103a11.97 11.97 0 00-.405-1.394 1 1 0 00-.003-.004z" clip-rule="evenodd" /></svg>
                             FLASH SALE!
                         </div>
-                        <h3 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-2 font-jakarta tracking-tight">
+                        <h3 class="text-2xl md:text-4xl font-extrabold text-slate-900 mb-2 font-jakarta tracking-tight">
                             Diskon <span class="text-rose-600">30%</span> Khusus Paket Bundle!
                         </h3>
-                        <p class="text-slate-500 font-bold flex items-center justify-center lg:justify-start gap-2">
+                        <p class="text-sm md:text-base text-slate-500 font-bold flex items-center justify-center lg:justify-start gap-2">
                              Penawaran terbatas untuk persiapan maksimal kamu
                         </p>
                     </div>
                     
                     {{-- Countdown Timer --}}
-                    <div class="flex items-center gap-4">
+                    <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
                         <div class="flex flex-col items-center">
-                            <div class="bg-white/80 backdrop-blur shadow-lg rounded-2xl w-16 h-16 md:w-20 md:h-20 flex items-center justify-center border border-white">
-                                <span class="text-2xl md:text-3xl font-black text-rose-600 font-jakarta" x-text="days">00</span>
+                            <div class="bg-white/80 backdrop-blur shadow-lg rounded-2xl w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center border border-white">
+                                <span class="text-lg sm:text-2xl md:text-3xl font-black text-rose-600 font-jakarta" x-text="days">00</span>
                             </div>
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2">Hari</span>
+                            <span class="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2">Hari</span>
                         </div>
-                        <span class="text-2xl font-bold text-slate-300 mb-6">:</span>
+                        <span class="text-lg md:text-2xl font-bold text-slate-300 mb-6">:</span>
                         <div class="flex flex-col items-center">
-                            <div class="bg-white/80 backdrop-blur shadow-lg rounded-2xl w-16 h-16 md:w-20 md:h-20 flex items-center justify-center border border-white">
-                                <span class="text-2xl md:text-3xl font-black text-rose-600 font-jakarta" x-text="hours">00</span>
+                            <div class="bg-white/80 backdrop-blur shadow-lg rounded-2xl w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center border border-white">
+                                <span class="text-lg sm:text-2xl md:text-3xl font-black text-rose-600 font-jakarta" x-text="hours">00</span>
                             </div>
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2">Jam</span>
+                            <span class="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2">Jam</span>
                         </div>
-                        <span class="text-2xl font-bold text-slate-300 mb-6">:</span>
+                        <span class="text-lg md:text-2xl font-bold text-slate-300 mb-6">:</span>
                         <div class="flex flex-col items-center">
-                            <div class="bg-white/80 backdrop-blur shadow-lg rounded-2xl w-16 h-16 md:w-20 md:h-20 flex items-center justify-center border border-white">
-                                <span class="text-2xl md:text-3xl font-black text-rose-600 font-jakarta" x-text="minutes">00</span>
+                            <div class="bg-white/80 backdrop-blur shadow-lg rounded-2xl w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center border border-white">
+                                <span class="text-lg sm:text-2xl md:text-3xl font-black text-rose-600 font-jakarta" x-text="minutes">00</span>
                             </div>
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2">Menit</span>
+                            <span class="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2">Menit</span>
                         </div>
-                        <span class="text-2xl font-bold text-slate-300 mb-6">:</span>
+                        <span class="text-lg md:text-2xl font-bold text-slate-300 mb-6">:</span>
                         <div class="flex flex-col items-center">
-                            <div class="bg-rose-600 shadow-lg shadow-rose-200 rounded-2xl w-16 h-16 md:w-20 md:h-20 flex items-center justify-center border border-rose-500">
-                                <span class="text-2xl md:text-3xl font-black text-white font-jakarta" x-text="seconds">00</span>
+                            <div class="bg-rose-600 shadow-lg shadow-rose-200 rounded-2xl w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center border border-rose-500">
+                                <span class="text-lg sm:text-2xl md:text-3xl font-black text-white font-jakarta" x-text="seconds">00</span>
                             </div>
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2">Detik</span>
+                            <span class="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2">Detik</span>
                         </div>
                     </div>
                 </div>
@@ -103,32 +103,32 @@
         </script>
 
         {{-- Main Stats Grid --}}
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-            <div class="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/40 p-6 shadow-sm hover:shadow-lg transition-all duration-300 group">
-                <div class="text-3xl font-black text-blue-600 font-jakarta mb-1 group-hover:scale-110 transition-transform origin-left">{{ $packages[0]['total_questions'] ?? 110 }}</div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">Soal per Paket</p>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12 md:mb-20">
+            <div class="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/40 p-4 md:p-6 shadow-sm hover:shadow-lg transition-all duration-300 group">
+                <div class="text-2xl md:text-3xl font-black text-blue-600 font-jakarta mb-1 group-hover:scale-110 transition-transform origin-left">{{ $packages[0]['total_questions'] ?? 110 }}</div>
+                <p class="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">Soal per Paket</p>
                 <div class="w-8 h-1 bg-blue-100 mt-3 rounded-full group-hover:w-full transition-all duration-500"></div>
             </div>
-            <div class="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/40 p-6 shadow-sm hover:shadow-lg transition-all duration-300 group">
-                <div class="text-3xl font-black text-indigo-600 font-jakarta mb-1 group-hover:scale-110 transition-transform origin-left">{{ $packages[0]['duration_minutes'] ?? 100 }}</div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">Menit Waktu</p>
+            <div class="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/40 p-4 md:p-6 shadow-sm hover:shadow-lg transition-all duration-300 group">
+                <div class="text-2xl md:text-3xl font-black text-indigo-600 font-jakarta mb-1 group-hover:scale-110 transition-transform origin-left">{{ $packages[0]['duration_minutes'] ?? 100 }}</div>
+                <p class="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">Menit Waktu</p>
                 <div class="w-8 h-1 bg-indigo-100 mt-3 rounded-full group-hover:w-full transition-all duration-500"></div>
             </div>
-            <div class="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/40 p-6 shadow-sm hover:shadow-lg transition-all duration-300 group">
-                <div class="text-3xl font-black text-emerald-600 font-jakarta mb-1 group-hover:scale-110 transition-transform origin-left">{{ count($packages) }}</div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">Paket Tersedia</p>
+            <div class="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/40 p-4 md:p-6 shadow-sm hover:shadow-lg transition-all duration-300 group">
+                <div class="text-2xl md:text-3xl font-black text-emerald-600 font-jakarta mb-1 group-hover:scale-110 transition-transform origin-left">{{ count($packages) }}</div>
+                <p class="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">Paket Tersedia</p>
                 <div class="w-8 h-1 bg-emerald-100 mt-3 rounded-full group-hover:w-full transition-all duration-500"></div>
             </div>
-            <div class="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/40 p-6 shadow-sm hover:shadow-lg transition-all duration-300 group">
-                <div class="text-3xl font-black text-amber-600 font-jakarta mb-1 group-hover:scale-110 transition-transform origin-left">550</div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">Skor Maksimal</p>
+            <div class="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/40 p-4 md:p-6 shadow-sm hover:shadow-lg transition-all duration-300 group">
+                <div class="text-2xl md:text-3xl font-black text-amber-600 font-jakarta mb-1 group-hover:scale-110 transition-transform origin-left">550</div>
+                <p class="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">Skor Maksimal</p>
                 <div class="w-8 h-1 bg-amber-100 mt-3 rounded-full group-hover:w-full transition-all duration-500"></div>
             </div>
         </div>
 
         {{-- Packages Header --}}
-        <div class="flex items-center gap-4 mb-8">
-            <h2 class="text-2xl font-bold text-slate-900 font-jakarta tracking-tight whitespace-nowrap">Pilih Paket Simulasi</h2>
+        <div class="flex items-center gap-4 mb-6 md:mb-8">
+            <h2 class="text-xl md:text-2xl font-bold text-slate-900 font-jakarta tracking-tight whitespace-nowrap">Pilih Paket Simulasi</h2>
             <div class="h-px w-full bg-slate-200"></div>
         </div>
 
@@ -179,7 +179,7 @@
 
                         <div class="mb-8 pt-6 border-t border-slate-50">
                             <div class="flex items-baseline gap-1">
-                                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Mulai Dari</span>
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Hanya</span>
                                 <span class="text-3xl font-black text-slate-900 font-jakarta">Rp {{ number_format($package['price'], 0, ',', '.') }}</span>
                             </div>
                         </div>

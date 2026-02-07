@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-slate-50 py-12 pt-28 relative overflow-hidden">
+<div class="min-h-screen bg-slate-50 py-12 pt-20 md:pt-28 relative overflow-hidden">
     {{-- Subtle Background Accents --}}
     <div class="fixed top-0 left-0 w-full h-full pointer-events-none">
         <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-500/5 blur-[120px] rounded-full"></div>
@@ -13,7 +13,63 @@
 
         {{-- Content --}}
         <div class="bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden">
-            <div class="overflow-x-auto">
+            {{-- Mobile Card View --}}
+            <div class="md:hidden space-y-4">
+                @forelse($attempts as $attempt)
+                    <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm relative overflow-hidden group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-bold text-slate-900 font-outfit text-base leading-tight mb-1">{{ $attempt->package->name }}</h3>
+                                <p class="text-xs text-slate-500 font-medium">{{ $attempt->package->year }} • {{ $attempt->created_at->format('d M Y, H:i') }}</p>
+                            </div>
+                            @if($attempt->passed_overall)
+                                <span class="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                </span>
+                            @else
+                                <span class="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-full bg-rose-100 text-rose-500">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                </span>
+                            @endif
+                        </div>
+                        
+                        <div class="flex items-center gap-4 mb-4 py-3 border-y border-slate-50">
+                            <div class="flex-1">
+                                <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-0.5">Skor Total</span>
+                                <span class="text-xl font-black text-slate-900 font-outfit">{{ $attempt->total_score }}</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="text-center px-2">
+                                    <span class="block text-[8px] font-bold text-slate-400 mb-0.5">TWK</span>
+                                    <span class="text-xs font-bold {{ $attempt->score_twk >= 65 ? 'text-emerald-600' : 'text-rose-500' }}">{{ $attempt->score_twk }}</span>
+                                </div>
+                                <div class="text-center px-2 border-l border-slate-100">
+                                    <span class="block text-[8px] font-bold text-slate-400 mb-0.5">TIU</span>
+                                    <span class="text-xs font-bold {{ $attempt->score_tiu >= 80 ? 'text-emerald-600' : 'text-rose-500' }}">{{ $attempt->score_tiu }}</span>
+                                </div>
+                                <div class="text-center px-2 border-l border-slate-100">
+                                    <span class="block text-[8px] font-bold text-slate-400 mb-0.5">TKP</span>
+                                    <span class="text-xs font-bold {{ $attempt->score_tkp >= 166 ? 'text-emerald-600' : 'text-rose-500' }}">{{ $attempt->score_tkp }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="{{ route('test.result', $attempt->id) }}" class="block w-full py-2.5 text-center bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-600 rounded-xl text-sm font-bold transition-colors border border-slate-100">
+                            Lihat Detail Hasil
+                        </a>
+                    </div>
+                @empty
+                    <div class="text-center py-12 bg-white rounded-3xl border border-slate-100 border-dashed">
+                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mx-auto mb-3 text-slate-300">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </div>
+                        <p class="text-slate-500 text-sm font-medium">Belum ada riwayat ujian.</p>
+                    </div>
+                @endforelse
+            </div>
+
+            {{-- Desktop Table View --}}
+            <div class="hidden md:block overflow-x-auto">
                 <table class="w-full">
                     <thead class="bg-slate-50 border-b border-slate-100">
                         <tr>

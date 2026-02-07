@@ -89,6 +89,7 @@ class FreeSimulation extends Component
                 ];
             }
             $grouped[$catName]['questions'][] = [
+                'question_id' => $q['id'],
                 'number' => $q['number'],
                 'is_answered' => isset($answers[$q['id']]),
                 'is_bookmarked' => in_array($q['id'], $bookmarks),
