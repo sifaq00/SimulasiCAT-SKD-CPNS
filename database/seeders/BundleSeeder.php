@@ -2,31 +2,43 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
 use App\Models\Bundle;
 use App\Models\Package;
-use Illuminate\Database\Seeder;
 
 class BundleSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Create bundle with all packages
+        // Get only paid packages (exclude free)
+        $paidPackages = Package::where('is_free', false)->get();
+
+        if ($paidPackages->count() < 2) {
+            $this->command->warn('⚠️ Not enough packages to create bundles. Skipping...');
+            return;
+        }
+
+        // Calculate bundle pricing
+        $totalPrice = $paidPackages->sum('price');
+        $discountPrice = $totalPrice * 0.65; // 35% discount
+
         $bundle = Bundle::updateOrCreate(
-            ['slug' => 'bundle-all-packages'],
+            ['slug' => 'bundle-paket-lengkap-semua'],
             [
-                'name' => 'Bundle Lengkap Semua Paket',
-                'description' => 'Akses semua paket simulasi SKD CPNS (2019, 2021, 2023, 2024, dan Prediksi 2026) dengan harga diskon 30%.',
-                'original_price' => 180000, // Sum of all package prices
-                'discount_price' => 126000, // 30% discount
+                'name' => 'Bundle Paket Lengkap Semua Tahun',
+                'slug' => 'bundle-paket-lengkap-semua',
+                'description' => 'Dapatkan SEMUA paket simulasi SKD (2019, 2021, 2024, 2026) dengan harga spesial! Hemat hingga 35%.',
+                'original_price' => $totalPrice,
+                'discount_price' => $discountPrice,
                 'is_active' => true,
             ]
         );
 
-        // Attach all active packages to bundle
-        $packageIds = Package::active()->pluck('id')->toArray();
-        $bundle->packages()->sync($packageIds);
+        // Attach all paid packages to bundle
+        $bundle->packages()->sync($paidPackages->pluck('id'));
+
+        $this->command->info('✅ Bundle seeded successfully!');
+        $this->command->info("💰 Original: Rp " . number_format($totalPrice, 0, ',', '.'));
+        $this->command->info("🎉 Bundle: Rp " . number_format($discountPrice, 0, ',', '.') . ' (35% OFF)');
     }
 }

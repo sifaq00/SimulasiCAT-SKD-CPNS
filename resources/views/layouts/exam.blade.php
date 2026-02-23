@@ -9,7 +9,7 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700|plus-jakarta-sans:400,500,600,700,800" rel="stylesheet" />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -56,7 +56,7 @@
         }
     </style>
 </head>
-<body class="h-full bg-gray-50 exam-container" oncontextmenu="return false;">
+<body class="h-full bg-gray-50 exam-container font-sans antialiased" oncontextmenu="return false;">
     <!-- User Watermark - DISABLED FOR DEVELOPMENT -->
     <!--
     <div class="watermark">
@@ -87,7 +87,5 @@
         // Disabled for development - enable in production
     </script>
     -->
-
-    @livewireScripts
 </body>
 </html>

@@ -23,6 +23,7 @@ class PackageManage extends Component
         'total_questions' => 110,
         'duration_minutes' => 100,
         'is_active' => true,
+        'is_free' => false,
     ];
 
     public $showBundleForm = false;
@@ -45,6 +46,7 @@ class PackageManage extends Component
         'formData.price' => 'required|numeric|min:0',
         'formData.total_questions' => 'required|integer|min:1',
         'formData.duration_minutes' => 'required|integer|min:1',
+        'formData.is_free' => 'boolean',
     ];
 
     protected $bundleRules = [
@@ -105,6 +107,7 @@ class PackageManage extends Component
             'total_questions' => $package->total_questions,
             'duration_minutes' => $package->duration_minutes,
             'is_active' => $package->is_active,
+            'is_free' => $package->is_free,
         ];
         $this->showForm = true;
     }
@@ -138,14 +141,22 @@ class PackageManage extends Component
     public function deletePackage($id)
     {
         $package = Package::findOrFail($id);
-        
-        if ($package->questions()->count() > 0) {
-            session()->flash('error', 'Tidak bisa menghapus paket yang sudah memiliki soal!');
+
+        // Check transactions first (safety from breaking history)
+        if ($package->transactions()->exists()) {
+            session()->flash('error', 'Tidak bisa menghapus paket yang sudah pernah dibeli user!');
             return;
         }
 
+        // Questions will be deleted by database cascade constraint
+        // But for safety, we can manually delete related data if needed
+        // $package->questions()->delete(); 
+
+        // Also detach from bundles
+        $package->bundles()->detach();
+
         $package->delete();
-        session()->flash('success', 'Paket berhasil dihapus!');
+        session()->flash('success', 'Paket dan semua soal terkait berhasil dihapus!');
         $this->loadPackages();
     }
 
@@ -167,6 +178,7 @@ class PackageManage extends Component
             'total_questions' => 110,
             'duration_minutes' => 100,
             'is_active' => true,
+            'is_free' => false,
         ];
     }
 
@@ -194,7 +206,7 @@ class PackageManage extends Component
             'original_price' => $bundle->original_price,
             'discount_price' => $bundle->discount_price,
             'is_active' => $bundle->is_active,
-            'selected_packages' => $bundle->packages->pluck('id')->map(fn($id) => (string)$id)->toArray(),
+            'selected_packages' => $bundle->packages->pluck('id')->map(fn($id) => (string) $id)->toArray(),
         ];
         $this->showBundleForm = true;
     }
@@ -234,13 +246,13 @@ class PackageManage extends Component
         // For simplicity, just delete. Transactions might have null bundle_id if generic constraint, 
         // or prevent delete if transactions exist.
         if ($bundle->transactions()->exists()) {
-             session()->flash('error', 'Tidak bisa menghapus bundle yang sudah dibeli user!');
-             return;
+            session()->flash('error', 'Tidak bisa menghapus bundle yang sudah dibeli user!');
+            return;
         }
 
         $bundle->packages()->detach(); // Pivot
         $bundle->delete();
-        
+
         session()->flash('success', 'Bundle berhasil dihapus!');
         $this->loadData();
     }

@@ -52,56 +52,97 @@
     </div>
 
     {{-- Table --}}
-    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table class="w-full">
-            <thead class="bg-gray-50 border-b">
-                <tr>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Invoice</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Paket</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y">
-                @forelse($transactions as $tx)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-3">
-                            <p class="font-mono text-sm">{{ $tx->invoice_number }}</p>
-                        </td>
-                        <td class="px-4 py-3">
-                            <p class="font-medium text-gray-900">{{ $tx->user->name }}</p>
-                            <p class="text-sm text-gray-500">{{ $tx->user->email }}</p>
-                        </td>
-                        <td class="px-4 py-3 text-sm">
-                            {{ $tx->package?->name ?? $tx->bundle?->name ?? '-' }}
-                        </td>
-                        <td class="px-4 py-3 text-sm font-medium">
-                            Rp {{ number_format($tx->amount, 0, ',', '.') }}
-                        </td>
-                        <td class="px-4 py-3">
-                            <span class="px-2 py-1 text-xs rounded-full 
-                                {{ $tx->status === 'paid' ? 'bg-green-100 text-green-700' : '' }}
-                                {{ $tx->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                                {{ $tx->status === 'failed' ? 'bg-red-100 text-red-700' : '' }}
-                                {{ $tx->status === 'expired' ? 'bg-gray-100 text-gray-700' : '' }}">
-                                {{ strtoupper($tx->status) }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-3 text-sm text-gray-500">
-                            {{ $tx->created_at->format('d M Y H:i') }}
-                        </td>
-                    </tr>
-                @empty
+    {{-- Mobile Card View --}}
+    <div class="grid grid-cols-1 gap-4 md:hidden">
+        @forelse($transactions as $tx)
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-3">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="font-mono text-xs text-gray-500">{{ $tx->invoice_number }}</p>
+                        <h3 class="font-bold text-gray-900">{{ $tx->user->name }}</h3>
+                        <p class="text-xs text-gray-400">{{ $tx->user->email }}</p>
+                    </div>
+                    <span class="px-2 py-1 text-xs rounded-full 
+                        {{ $tx->status === 'paid' ? 'bg-green-100 text-green-700' : '' }}
+                        {{ $tx->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                        {{ $tx->status === 'failed' ? 'bg-red-100 text-red-700' : '' }}
+                        {{ $tx->status === 'expired' ? 'bg-gray-100 text-gray-700' : '' }}">
+                        {{ strtoupper($tx->status) }}
+                    </span>
+                </div>
+
+                <div class="border-t border-b border-gray-50 py-2 my-2">
+                    <p class="text-sm text-gray-600 mb-1">Item:</p>
+                    <p class="font-medium text-gray-900 text-sm">
+                         {{ $tx->package?->name ?? $tx->bundle?->name ?? '-' }}
+                    </p>
+                </div>
+
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-gray-500">{{ $tx->created_at->format('d M Y H:i') }}</span>
+                    <span class="font-bold text-blue-600">Rp {{ number_format($tx->amount, 0, ',', '.') }}</span>
+                </div>
+            </div>
+        @empty
+             <div class="text-center p-8 text-gray-500 bg-white rounded-xl">
+                Tidak ada transaksi ditemukan.
+            </div>
+        @endforelse
+    </div>
+
+    {{-- Desktop Table View --}}
+    <div class="hidden md:block bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50 border-b">
                     <tr>
-                        <td colspan="6" class="px-4 py-8 text-center text-gray-500">
-                            Tidak ada transaksi ditemukan.
-                        </td>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Invoice</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Paket</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y">
+                    @forelse($transactions as $tx)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3">
+                                <p class="font-mono text-sm">{{ $tx->invoice_number }}</p>
+                            </td>
+                            <td class="px-4 py-3">
+                                <p class="font-medium text-gray-900">{{ $tx->user->name }}</p>
+                                <p class="text-sm text-gray-500">{{ $tx->user->email }}</p>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                {{ $tx->package?->name ?? $tx->bundle?->name ?? '-' }}
+                            </td>
+                            <td class="px-4 py-3 text-sm font-medium">
+                                Rp {{ number_format($tx->amount, 0, ',', '.') }}
+                            </td>
+                            <td class="px-4 py-3">
+                                <span class="px-2 py-1 text-xs rounded-full 
+                                    {{ $tx->status === 'paid' ? 'bg-green-100 text-green-700' : '' }}
+                                    {{ $tx->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                    {{ $tx->status === 'failed' ? 'bg-red-100 text-red-700' : '' }}
+                                    {{ $tx->status === 'expired' ? 'bg-gray-100 text-gray-700' : '' }}">
+                                    {{ strtoupper($tx->status) }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-500">
+                                {{ $tx->created_at->format('d M Y H:i') }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                                Tidak ada transaksi ditemukan.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
         <div class="p-4 border-t">
             {{ $transactions->links() }}

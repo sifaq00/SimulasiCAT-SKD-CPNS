@@ -86,16 +86,27 @@ MIDTRANS_IS_PRODUCTION=false
 
 ### 4. Setup Database
 
-Jalankan migrasi dan seeder untuk membuat tabel serta data awal (User Admin & Contoh Paket):
+Jalankan migrasi dan seeder untuk mengisi data awal (Kategori, Paket, Bundle, Soal, & Admin):
 
 ```bash
+# Opsi 1: Setup awal (jika database kosong)
 php artisan migrate --seed
+
+# Opsi 2: Reset total (HAPUS SEMUA DATA user & transaksi)
+php artisan migrate:fresh --seed
 ```
 
 > **Note:** Seeder akan membuat akun Admin default:
 >
-> - Email: `admin@admin.com`
+> - Email: `admin@simulasicpns.test`
 > - Password: `password`
+>
+> **Data yang di-generate otomatis:**
+>
+> - **1 Paket Gratis:** 30 Soal (10 TWK, 10 TIU, 10 TKP)
+> - **4 Paket Berbayar:** SKD 2019, 2021, 2024, 2026 (110 Soal/paket)
+> - **1 Bundle Hemat:** Paket Lengkap Semua Tahun (Diskon 35%)
+> - **Total Soal:** 470 Soal + 2350 Opsi Jawaban
 
 ### 5. Jalankan Aplikasi
 

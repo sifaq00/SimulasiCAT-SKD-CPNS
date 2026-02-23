@@ -99,13 +99,21 @@ class PaymentService
                 ? 'https://app.midtrans.com/snap/v1/transactions'
                 : 'https://app.sandbox.midtrans.com/snap/v1/transactions';
 
+            \Illuminate\Support\Facades\Log::info('Midtrans Request', [
+                'url' => $url,
+                'order_id' => $params['transaction_details']['order_id'] ?? 'N/A',
+                'amount' => $params['transaction_details']['gross_amount'] ?? '0'
+            ]);
+
             /** @var \Illuminate\Http\Client\Response $response */
             $response = \Illuminate\Support\Facades\Http::withOptions([
                 'verify' => false,
+                'connect_timeout' => 10,
+                'timeout' => 30,
             ])
-            ->withBasicAuth(config('services.midtrans.server_key'), '')
-            ->acceptJson()
-            ->post($url, $params);
+                ->withBasicAuth(config('services.midtrans.server_key'), '')
+                ->acceptJson()
+                ->post($url, $params);
 
             $body = $response->json() ?: [];
 
