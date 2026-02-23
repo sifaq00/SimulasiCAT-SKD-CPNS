@@ -19,7 +19,7 @@ return new class extends Migration
                 ->noActionOnDelete();
             $table->foreignId('selected_option_id')
                 ->nullable()
-                ->constrained()
+                ->constrained('options')
                 ->noActionOnDelete();
             $table->boolean('is_correct')->default(false);
             $table->integer('points_earned')->default(0);
