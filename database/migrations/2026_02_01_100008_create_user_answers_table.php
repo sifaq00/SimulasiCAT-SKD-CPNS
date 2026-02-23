@@ -13,9 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('test_attempt_id')
-                ->constrained()
-                ->noActionOnDelete();
+            $table->foreignId('test_attempt_id')->constrained()->onDelete('cascade');
             $table->foreignId('question_id')
                 ->constrained()
                 ->noActionOnDelete();
