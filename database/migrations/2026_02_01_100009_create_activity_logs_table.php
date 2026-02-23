@@ -13,8 +13,14 @@ return new class extends Migration
     {
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('test_attempt_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained()
+                ->noActionOnDelete();
+            $table->foreignId('test_attempt_id')
+                ->nullable()
+                ->constrained()
+                ->noActionOnDelete();
             $table->string('action'); // login, logout, tab_switch, blur, screenshot_attempt, etc.
             $table->string('ip_address')->nullable();
             $table->text('user_agent')->nullable();
