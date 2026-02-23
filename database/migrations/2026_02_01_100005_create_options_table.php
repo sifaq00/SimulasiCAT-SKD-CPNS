@@ -28,7 +28,7 @@ return new class extends Migration
             $table->foreign('correct_option_id')
                 ->references('id')
                 ->on('options')
-                ->onDelete('set null');
+                ->restrictOnDelete();
         });
     }
 
